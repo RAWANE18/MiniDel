@@ -3,7 +3,6 @@
 #include <stdio.h>
 void yyerror(const char *s);
 int yylex();
-int yylex();
 int nb_ligne=1;
 int Col=1;
 %}
@@ -51,7 +50,6 @@ listeT : ARRAY VIR listeT
 listeC :  IDF AFF type VIR listeC
        |  IDF AFF type 
 ;
-// int x=0 ,y,z=0.2;
 listeV : IDF VIR listeV
        | IDF AFF type VIR listeV
        | IDF
@@ -90,6 +88,7 @@ expression : expression ADD expression
            | expression SUB expression 
            | expression MUL expression
            | expression DIV expression 
+           | PO expression PF
            | INTEGER 
            | FLOAT
            | IDF 
@@ -117,5 +116,5 @@ return 1;
 
 //Erreur GLOB AMROUSS 
 void yyerror(const char *s){
-fprintf(stderr," Erreur syntaxique %s ligne %d colonne %d",s,nb_ligne, Col);
+printf("%s ligne %d colonne %d",s,nb_ligne, Col);
 }

@@ -54,13 +54,14 @@ ESPACE      [ \t]+
 ":"              {Col += strlen(yytext); return DPOINT; }
 {STR}            {Col += strlen(yytext); return STR; }
 {IDF} {
-yylval.str=strdup(yytext);
 
 			  if (yyleng>=7){ printf ("warning: %s trop long a la ligne %d a la colonne %d \n ",yytext,nb_ligne, Col);
+      
 			  return ERR;
 			  }
+        yylval.str=strdup(yytext);
 			   Col= Col + strlen(yytext);
-           
+        
 			  return IDF;
 
 }

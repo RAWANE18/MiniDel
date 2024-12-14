@@ -1,24 +1,34 @@
-PROGRAM test
-VAR{
-    INTEGER a =7,b;
-    FLOAT C;
-CONST d = 5 ;
-INTEGER K[78],L[98];
+// Example program with deliberate lexical and syntactic errors
 
-  
+PROGRAM Test // Lexical Error: Identifier exceeds 7 characters
+VAR {
+    INTEGER x, y, z1; // Lexical Error: Identifier exceeds 7 characters
+    FLOAT var;           // Lexical Error: Invalid identifier starting with a digit
+    CONST pi = 2;    // Syntax Error: Invalid constant format
+    INTEGER a, b;      
 }
-BEGIN{
-    IF(( n ) && ( n+2 )){
-        a=2+b;
+BEGIN
+{
+ x=5.5;              // Syntax Error: Assigning FLOAT to INTEGER
+y=( x + 2 );            // Syntax Error: Missing closing parenthesis
+    z = a + b;            // Syntax Error: Use of undeclared variables
+    a = 10 / (5 - 5);     // Runtime Error: Division by zero (handled during runtime if implemented)
+    
+    IF (x > 0) {          // Syntax Error: Missing closing bracket
+        b = b + 1;
     }
-    //this is a line comment
-/* this is a block
- comment */
-    WRITELN('hello KKKKKNNU'a);
-        FOR( i : 2 : 3 : 4 ){
-        a=b+2;
+ELSE {                // Syntax Error: Missing IF block
+        a = a - 1;
     }
 
- }
-END
+    FOR (i : 0: 1 : 5)
+    {       // Syntax Error: Missing condition or closing parenthesis
+    b = b + 1;}
 
+    WHILE (z != 0 ){       // Syntax Error: Missing closing parenthesis
+        z = z - 1;
+    }
+
+    WRITELN('Value of x: ' x); 
+    }// Syntax Error: Invalid function name (writeln expected)
+END                        // Syntax Error: Missing period

@@ -1,3 +1,3 @@
 flex lexical.l
-bison -d tp1exo1.y
+bison -d synt.y
 gcc lex.yy.c synt.tab.c -lfl -ly -o lexical

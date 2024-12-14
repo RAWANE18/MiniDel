@@ -881,20 +881,21 @@ case 38:
 YY_RULE_SETUP
 #line 56 "lexical.l"
 {
-yylval.str=strdup(yytext);
 
 			  if (yyleng>=7){ printf ("warning: %s trop long a la ligne %d a la colonne %d \n ",yytext,nb_ligne, Col);
+      
 			  return ERR;
 			  }
+        yylval.str=strdup(yytext);
 			   Col= Col + strlen(yytext);
-           
+        
 			  return IDF;
 
 }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 67 "lexical.l"
+#line 68 "lexical.l"
 {
 yylval.entier=atoi(yytext);
  Col= Col + strlen(yytext);
@@ -911,7 +912,7 @@ yylval.entier=atoi(yytext);
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 80 "lexical.l"
+#line 81 "lexical.l"
 {
  yylval.reel=atof(yytext);
  if ((yytext[0] == '-'||yytext[0] == '+') && yytext[1] != '('){
@@ -924,27 +925,27 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 90 "lexical.l"
+#line 91 "lexical.l"
 { Col += yyleng; } {/* erreur espace*/}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 91 "lexical.l"
+#line 92 "lexical.l"
 { nb_ligne++; Col = 1; } 
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 92 "lexical.l"
+#line 93 "lexical.l"
 
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 93 "lexical.l"
+#line 94 "lexical.l"
 
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 95 "lexical.l"
+#line 96 "lexical.l"
 {
     printf("Erreur lexicale : Ligne %d, Colonne %d, Caractere non reconnu : %s\n", nb_ligne, Col, yytext);
     Col += strlen(yytext);
@@ -953,10 +954,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 101 "lexical.l"
+#line 102 "lexical.l"
 ECHO;
 	YY_BREAK
-#line 960 "lex.yy.c"
+#line 961 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1842,5 +1843,5 @@ int main()
 	return 0;
 	}
 #endif
-#line 101 "lexical.l"
+#line 102 "lexical.l"
 
