@@ -2,21 +2,18 @@
 #include <string.h>
 #include "synt.tab.h"
 extern YYSTYPE yylval;
-int nb_ligne=1;
-int Col=1;
+extern int nb_ligne;
+extern int Col;
 extern YYSTYPE yylval;
 %}
 
 CHIFFRE           [0-9]
 LETTRE          [a-zA-Z]
-STR \'[^"]*\'
+STR \'[^']*\'
 IDF     {LETTRE}[a-z0-9_]*
 INTEGER         \(-{CHIFFRE}+\)|-{CHIFFRE}+|{CHIFFRE}+
 FLOAT    (\(\+{CHIFFRE}+\.{CHIFFRE}+\)|\(\-{CHIFFRE}+\.{CHIFFRE}+\)|{CHIFFRE}+\.{CHIFFRE}+)
-ARRAY      {IDENTIFIER}\[{CHIFFRE}+\] 
-ESPACE      [ \t\n]+
-COMMENT_LINE    //.\n
-COMMENT_BLOCK   /*(.|\n)?*/
+ESPACE      [ \t]+
 
 %%
 "PROGRAM"     {Col += strlen(yytext); return PROGRAM; }
@@ -55,11 +52,11 @@ COMMENT_BLOCK   /*(.|\n)?*/
 ","              {Col += strlen(yytext); return VIR; }
 ";"              {Col += strlen(yytext); return PVIR; }
 ":"              {Col += strlen(yytext); return DPOINT; }
-{STR}         {Col += strlen(yytext); return STR; }
+{STR}            {Col += strlen(yytext); return STR; }
 {IDF} {
 yylval.str=strdup(yytext);
 
-			  if (yyleng>=7){ printf ("warning: IDF trop long a la ligne %d a la colonne %d \n ",nb_ligne, Col);
+			  if (yyleng>=7){ printf ("warning: %s trop long a la ligne %d a la colonne %d \n ",yytext,nb_ligne, Col);
 			  return ERR;
 			  }
 			   Col= Col + strlen(yytext);
@@ -75,11 +72,9 @@ yylval.entier=atoi(yytext);
         return ERR;
     }
  if (atof(yytext)<-32768 || atof(yytext)>32767){
-				printf("Lexical error",yytext,"est trop long.");
+				printf("Lexical error dans %s 'Depassement de taille ' \n",yytext);
 				return ERR;
 				}
-
- 
    return INTEGER;
 }
 {FLOAT} {
@@ -88,12 +83,11 @@ yylval.entier=atoi(yytext);
         printf("Erreur lexicale : Ligne %d, Colonne %d, Reel signe sans parentheses : '%s'\n", nb_ligne, Col, yytext);
         return ERR;
     }
-printf (" L entite lexicale reconnue est %s \n", yytext);
   Col= Col + strlen(yytext);
-   return INTEGER;
+   return FLOAT;
 }
 
-[ \t\r]        { Col += yyleng; }
+{ESPACE}    { Col += yyleng; } {/* erreur espace*/}
 \n              { nb_ligne++; Col = 1; } 
 "//".*
 "/*"([^*]|\*+[^/])*\*+"/"

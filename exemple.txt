@@ -1,18 +1,24 @@
 PROGRAM test
 VAR{
-    INTEGER a,b;
+    INTEGER a =7,b;
     FLOAT C;
-    CONST d = 2 ;
-    INTEGER T [ 50 ] ;
+CONST d = 5 ;
+INTEGER K[78],L[98];
+
+  
 }
 BEGIN{
+    IF(( n ) && ( n+2 )){
+        a=2+b;
+    }
     //this is a line comment
 /* this is a block
  comment */
-    WRITELN('hello'a);
+    WRITELN('hello KKKKKNNU'a);
         FOR( i : 2 : 3 : 4 ){
         a=b+2;
     }
 
  }
 END
+

@@ -4,8 +4,8 @@
 void yyerror(const char *s);
 int yylex();
 int yylex();
-extern int nb_ligne;
-extern int Col;
+int nb_ligne=1;
+int Col=1;
 %}
 %union {
     char *str;
@@ -14,7 +14,8 @@ extern int Col;
 } 
 %token PROGRAM VAR begin END CONST INTEGER FLOAT IF ELSE FOR WHILE READLN WRITELN
 %token ADD SUB MUL DIV AND OR NOT EQ NEG INF INF_E SUP SUP_E AFF PO PF OB FB ALO ALF VIR PVIR DPOINT AP
-%token IDF ERR STR
+%token IDF ERR STR 
+
 
 %nonassoc NOT
 %left OR
@@ -28,29 +29,33 @@ extern int Col;
 %start S
 %%
 
-S: PROGRAM IDF VAR ALO declarationV ALF begin ALO corps ALF END  {printf("\nProgramme syntaxiquement correcte. \n"); YYACCEPT;}
+S: PROGRAM IDF VAR ALO declarationV ALF begin ALO corps ALF END  
+{printf("\nProgramme syntaxiquement correcte. \n"); YYACCEPT;}
 ;
 
 declarationV : type listeV PVIR declarationV
-		     | declarationC PVIR declarationV 
-			 | declarationTab PVIR declarationV 
-			 | type listeV PVIR //declaration de liste des variables
-			 | declarationC PVIR //declaration d'une const
-			 | declarationTab PVIR //declaration d'un tableau
+             | type listeT PVIR declarationV 
+	      | CONST listeC PVIR declarationV 
+	      | type listeV PVIR 
+	      | CONST listeC PVIR 
+	      | type listeT PVIR
 ;
 
-declarationTab : type IDF OB INTEGER FB 
-
-;
-declarationC : CONST IDF AFF INTEGER
-             | CONST IDF AFF FLOAT
-
-;
 type : INTEGER
      | FLOAT
 ;
+ARRAY : IDF OB INTEGER FB
+listeT : ARRAY VIR listeT
+       | ARRAY
+;
+listeC :  IDF AFF type VIR listeC
+       |  IDF AFF type 
+;
+// int x=0 ,y,z=0.2;
 listeV : IDF VIR listeV
+       | IDF AFF type VIR listeV
        | IDF
+       | IDF AFF type
 ;
 corps : corps instruction 
       | instruction 
@@ -95,8 +100,9 @@ cond : expression EQ expression
      | expression SUP expression 
      | expression INF_E expression 
      | expression SUP_E expression 
-	 | expression AND expression 
-	 | expression OR expression 
+     | PO expression PF AND PO expression PF
+     | PO expression PF OR PO expression PF
+     | PO NOT expression PF
 ;
 %%
 int main()
@@ -109,8 +115,7 @@ int yywrap()
 return 1;
 }
 
-
+//Erreur GLOB AMROUSS 
 void yyerror(const char *s){
-  fprintf(stderr, "Error: %s ligne num %d\n", s,nb_ligne);
- 
+fprintf(stderr," Erreur syntaxique %s ligne %d colonne %d",s,nb_ligne, Col);
 }
