@@ -1,0 +1,18 @@
+PROGRAM test
+VAR{
+    INTEGER a,b;
+    FLOAT C;
+    CONST d = 2 ;
+    INTEGER T [ 50 ] ;
+}
+BEGIN{
+    //this is a line comment
+/* this is a block
+ comment */
+    WRITELN('hello'a);
+        FOR( i : 2 : 3 : 4 ){
+        a=b+2;
+    }
+
+ }
+END
