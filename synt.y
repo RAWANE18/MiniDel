@@ -111,6 +111,7 @@ cond : expression op_EQ expression
 %%
 int main()
 {yyparse();
+afficher();
   return 0;
 }
 

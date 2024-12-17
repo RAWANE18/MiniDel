@@ -51,9 +51,9 @@ void init()
 
 /* 2- Fonction d'insertion des entités lexicales ***/
 
-void inserer(char entite[], char code[], char type[], char val[],int i, int y)
+void inserer(char entite[], char code[], char type[], char val[], int i, int y)
 {
-    
+
     switch (y)
     {
     case 0: // Insertion dans la table des IDF et CONSTANTES
@@ -89,33 +89,45 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
     switch (y)
     {
     case 0: // Table des IDF et CONST
-        for (i = 0;( ( i<1000) && (tab[i].state==1)) && (strcmp(entite, tab[i].name)!=0) ; i++);
-        
+        for (i = 0; ((i < 1000) && (tab[i].state == 1)) && (strcmp(entite, tab[i].name) != 0); i++)
+            ;
+
         if (i < 1000)
         {
             inserer(entite, code, type, val, i, 0);
-        }else{
-printf("entité existe déjà \n");}
+        }
+        else
+        {
+            printf("entite existe deja \n");
+        }
         break;
 
     case 1: // Table des séparateurs
-        for (i = 0; (( i<50) && (tabS[i].state==1)) && (strcmp(entite, tab[i].name)!=0) ;i++);
-        
+        for (i = 0; ((i < 50) && (tabS[i].state == 1)) && (strcmp(entite, tab[i].name) != 0); i++)
+            ;
+
         if (i < 50)
         {
-           inserer ( entite, code,type, val, i , 1);
-        }else{
-printf("entité existe déjà \n");}
+            inserer(entite, code, type, val, i, 1);
+        }
+        else
+        {
+            printf("entite existe deja \n");
+        }
         break;
 
     case 2: // Table des mots-clés
-        for (i = 0;(( i<50) && (tabM[i].state==1)) && (strcmp(entite, tab[i].name)!=0) ;i++);
-        
+        for (i = 0; ((i < 50) && (tabM[i].state == 1)) && (strcmp(entite, tab[i].name) != 0); i++)
+            ;
+
         if (i < 50)
-        { 
-               inserer ( entite, code,type, val, i , 1);
-        }else{
-printf("entité existe déjà \n");}
+        {
+            inserer(entite, code, type, val, i, 1);
+        }
+        else
+        {
+            printf("entite existe deja \n");
+        }
         break;
 
     default:
@@ -124,7 +136,6 @@ printf("entité existe déjà \n");}
     }
 }
 
-
 /* 4- Fonction d'affichages***/
 
 void afficher()
@@ -132,9 +143,9 @@ void afficher()
     int i;
 
     printf("/***************Table des symboles des constantes et variables*************/\n");
-    printf("____________________________________________________________________\n");
+    printf("_____________________________________________________________\n");
     printf("| %-11s | %-15s | %-12s | %-10s |\n", "Nom_Entite", "Code_Entite", "Type_Entite", "Val_Entite");
-    printf("____________________________________________________________________\n");
+    printf("|-------------|-----------------|--------------|------------|\n");
     for (i = 0; i < cpt; i++)
     {
         if (tab[i].state == 1)
@@ -145,25 +156,25 @@ void afficher()
 
     printf("\n/***************Table des symboles mots cles*************/\n");
     printf("_____________________________________\n");
-    printf("\t| NomEntite |  CodeEntite |\n");
+    printf("| NomEntite |  CodeEntite |\n");
     printf("_____________________________________\n");
     for (i = 0; i < cptm; i++)
     {
         if (tabM[i].state == 1)
         {
-            printf("\t|%10s |%12s |\n", tabM[i].name, tabM[i].type);
+            printf("|%10s |%12s |\n", tabM[i].name, tabM[i].type);
         }
     }
 
     printf("\n/***************Table des symboles separateurs*************/\n");
     printf("_____________________________________\n");
-    printf("\t| NomEntite |  CodeEntite |\n");
+    printf("| NomEntite |  CodeEntite |\n");
     printf("_____________________________________\n");
     for (i = 0; i < cpts; i++)
     {
         if (tabS[i].state == 1)
         {
-            printf("\t|%10s |%12s |\n", tabS[i].name, tabS[i].type);
+            printf("|%10s |%12s |\n", tabS[i].name, tabS[i].type);
         }
     }
 }

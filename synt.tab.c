@@ -72,6 +72,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include "ts.h"
 void yyerror(const char *s);
 extern char *yytext;
 int yylex();
@@ -80,7 +81,7 @@ int Col=1;
 
 
 /* Line 189 of yacc.c  */
-#line 84 "synt.tab.c"
+#line 85 "synt.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -157,7 +158,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 10 "synt.y"
+#line 11 "synt.y"
 
     char *str;
     int entier;
@@ -166,7 +167,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 170 "synt.tab.c"
+#line 171 "synt.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -178,7 +179,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 182 "synt.tab.c"
+#line 183 "synt.tab.c"
 
 #ifdef short
 # undef short
@@ -491,12 +492,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    34,    34,    38,    39,    40,    41,    42,    43,    46,
-      47,    49,    50,    51,    53,    54,    56,    57,    58,    59,
-      62,    63,    65,    66,    67,    68,    69,    70,    72,    74,
-      75,    77,    79,    81,    84,    86,    87,    88,    89,    91,
-      92,    93,    94,    95,    96,    97,    98,   100,   101,   102,
-     103,   104,   105,   106,   107,   108
+       0,    35,    35,    39,    40,    41,    42,    43,    44,    47,
+      48,    50,    51,    52,    54,    55,    57,    58,    59,    60,
+      63,    64,    66,    67,    68,    69,    70,    71,    73,    75,
+      76,    78,    80,    82,    85,    87,    88,    89,    90,    92,
+      93,    94,    95,    96,    97,    98,    99,   101,   102,   103,
+     104,   105,   106,   107,   108,   109
 };
 #endif
 
@@ -1497,14 +1498,14 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 35 "synt.y"
+#line 36 "synt.y"
     {printf("\nProgramme syntaxiquement correcte. \n"); YYACCEPT;;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1508 "synt.tab.c"
+#line 1509 "synt.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1716,10 +1717,11 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 110 "synt.y"
+#line 111 "synt.y"
 
 int main()
 {yyparse();
+afficher();
   return 0;
 }
 
