@@ -76,12 +76,13 @@
 void yyerror(const char *s);
 extern char *yytext;
 int yylex();
+extern FILE *yyin;
 int nb_ligne=1;
 int Col=1;
 
 
 /* Line 189 of yacc.c  */
-#line 85 "synt.tab.c"
+#line 86 "synt.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -158,16 +159,14 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 11 "synt.y"
+#line 12 "synt.y"
 
-    char *str;
-    int entier;
-    float reel;
+    char *str; 
 
 
 
 /* Line 214 of yacc.c  */
-#line 171 "synt.tab.c"
+#line 170 "synt.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -179,7 +178,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 183 "synt.tab.c"
+#line 182 "synt.tab.c"
 
 #ifdef short
 # undef short
@@ -477,7 +476,7 @@ static const yytype_int8 yyrhs[] =
       31,    34,    51,    35,    -1,    10,    30,    61,    31,    34,
       51,    35,    11,    34,    51,    35,    -1,    13,    30,    61,
       31,    34,    51,    35,    -1,    12,    30,    40,    38,     8,
-      38,     8,    38,     8,    31,    34,    51,    35,    -1,    14,
+      38,     8,    38,    40,    31,    34,    51,    35,    -1,    14,
       30,    40,    31,    -1,    15,    30,    59,    31,    -1,    59,
       42,    -1,    59,    40,    -1,    42,    -1,    40,    -1,    60,
       16,    60,    -1,    60,    17,    60,    -1,    60,    18,    60,
@@ -492,12 +491,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    35,    35,    39,    40,    41,    42,    43,    44,    47,
-      48,    50,    51,    52,    54,    55,    57,    58,    59,    60,
-      63,    64,    66,    67,    68,    69,    70,    71,    73,    75,
-      76,    78,    80,    82,    85,    87,    88,    89,    90,    92,
-      93,    94,    95,    96,    97,    98,    99,   101,   102,   103,
-     104,   105,   106,   107,   108,   109
+       0,    34,    34,    40,    41,    42,    43,    44,    45,    48,
+      49,    51,    52,    53,    55,    56,    58,    59,    60,    61,
+      64,    65,    67,    68,    69,    70,    71,    72,    74,    76,
+      77,    79,    81,    83,    86,    88,    89,    90,    91,    93,
+      94,    95,    96,    97,    98,    99,   100,   102,   103,   104,
+     105,   106,   107,   108,   109,   110
 };
 #endif
 
@@ -600,7 +599,7 @@ static const yytype_int16 yypact[] =
      -62,   -62,   -62,   100,   116,    43,    77,    77,   -62,   -62,
      132,   132,   132,   132,   132,   132,    98,   148,    98,   -62,
      -62,   155,   157,    45,   180,    59,     8,     8,   178,   152,
-     -62,   123,   127,   158,   183,   -62,   -62,    98,   162,    74,
+     -62,   123,   127,   158,   151,   -62,   -62,    98,   162,    74,
      160,   -62,    98,    88,   -62
 };
 
@@ -662,7 +661,7 @@ static const yytype_int16 yycheck[] =
       17,    18,    19,    30,    30,    30,    23,    24,    25,    26,
       27,    28,     6,    37,    37,    37,    31,    31,    31,    40,
       40,     8,    38,    34,    34,    30,    38,    30,     8,    11,
-      38,     8,    34,    31,    34,    25,    -1,    -1,    39,    -1,
+      38,    40,    34,    31,    34,    25,    -1,    -1,    39,    -1,
       59
 };
 
@@ -683,7 +682,7 @@ static const yytype_uint8 yystos[] =
       31,    40,    42,    60,    60,    31,    60,    60,    60,    60,
       60,    60,    60,    60,    60,    60,    34,     8,    34,    31,
       31,    20,    21,    51,    38,    51,    30,    30,    35,     8,
-      35,    60,    60,    11,    38,    31,    31,    34,     8,    51,
+      35,    60,    60,    11,    38,    31,    31,    34,    40,    51,
       31,    35,    34,    51,    35
 };
 
@@ -1498,14 +1497,16 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 36 "synt.y"
-    {printf("\nProgramme syntaxiquement correcte. \n"); YYACCEPT;;}
+#line 35 "synt.y"
+    {    printf("\t ___________________________________\n");
+printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |_________________________________|\n");
+ YYACCEPT;;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1509 "synt.tab.c"
+#line 1510 "synt.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1717,7 +1718,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 111 "synt.y"
+#line 112 "synt.y"
 
 int main()
 {yyparse();
@@ -1730,8 +1731,8 @@ int yywrap()
 return 1;
 }
 
+
 void yyerror(const char *s){
 printf("Error: %s ligne %d colonne %d sur l'entite %s\n",s,nb_ligne, Col, yytext ? yytext :"unknown");
 }
-
 

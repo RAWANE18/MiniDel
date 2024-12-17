@@ -89,16 +89,14 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 11 "synt.y"
+#line 12 "synt.y"
 
-    char *str;
-    int entier;
-    float reel;
+    char *str; 
 
 
 
 /* Line 1676 of yacc.c  */
-#line 102 "synt.tab.h"
+#line 100 "synt.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

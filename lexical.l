@@ -23,15 +23,15 @@ ESPACE      [ \t]+
 "VAR"          {idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_VAR; }
 "BEGIN"        {idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_begin; }
 "END"          {idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_END; }
-"CONST"        {yylval.str=strdup("CONST"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_CONST; }
-"INTEGER"      {yylval.str=strdup("CONST"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_INTEGER; }
-"FLOAT"        {yylval.str=strdup("CONST"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_FLOAT; }
 "IF"           {idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_IF; }
 "ELSE"         {idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_ELSE; }
 "FOR"          {idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_FOR; }
 "WHILE"        {idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_WHILE; }
 "READLN"       {idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_READLN; }
 "WRITELN"      {idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_WRITELN; }
+"CONST"        {yylval.str=strdup("CONST"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_CONST; }
+"INTEGER"      {yylval.str=strdup("INTEGER"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_INTEGER; }
+"FLOAT"        {yylval.str=strdup("FLOAT"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_FLOAT; }
 "+"              {idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_ADD; }
 "-"              {idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_SUB; }
 "*"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_MUL; }
@@ -59,18 +59,16 @@ ESPACE      [ \t]+
 {IDF} {
 
 			  if (yyleng>=7){ printf ("warning: %s trop long a la ligne %d a la colonne %d \n ",yytext,nb_ligne, Col);
-      
 			  return ERR;
 			  }
         yylval.str=strdup(yytext);
 			   Col= Col + strlen(yytext);
-          idx=rechercher(yytext, "Identificateur", "", "", 0);
+        idx=rechercher(yytext, "Identificateur", "", "", 0);
 			  return IDF;
 
 }
 
 {INTEGER} {
-yylval.entier=atoi(yytext);
  Col= Col + strlen(yytext);
    if (yytext[0] == '-' && yytext[1] != '(') {
         printf("Erreur lexicale : Ligne %d, Colonne %d, Entier signe sans parentheses : '%s'\n", nb_ligne, Col, yytext);
@@ -87,7 +85,6 @@ yylval.entier=atoi(yytext);
 }
 
 {FLOAT} {
- yylval.reel=atof(yytext);
  if ((yytext[0] == '-'||yytext[0] == '+') && yytext[1] != '('){
         printf("Erreur lexicale : Ligne %d, Colonne %d, Reel signe sans parentheses : '%s'\n", nb_ligne, Col, yytext);
         return ERR;
@@ -112,4 +109,3 @@ yylval.entier=atoi(yytext);
 }
 
 %%
-

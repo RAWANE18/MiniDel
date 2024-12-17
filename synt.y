@@ -5,15 +5,14 @@
 void yyerror(const char *s);
 extern char *yytext;
 int yylex();
+extern FILE *yyin;
 int nb_ligne=1;
 int Col=1;
 %}
 %union {
-    char *str;
-    int entier;
-    float reel;
+    char *str; 
 } 
-/*----------------------- Définition des mots clé et opérend----------------------------*/
+/*----------------------- Définition des mots clé et opérends----------------------------*/
 %token mc_PROGRAM mc_VAR mc_begin mc_END mc_CONST mc_INTEGER mc_FLOAT mc_IF mc_ELSE mc_FOR mc_WHILE mc_READLN mc_WRITELN
 %token op_ADD op_SUB op_MUL op_DIV op_AND op_OR op_NOT op_EQ op_NEG op_INF op_INF_E op_SUP op_SUP_E op_AFF PO PF OB FB ALO ALF VIR PVIR DPOINT AP
 %token IDF ERR STR 
@@ -33,7 +32,9 @@ int Col=1;
 /*----------------------- Syntax générale du Programme ----------------------------*/
 
 S: mc_PROGRAM IDF mc_VAR ALO declarationV ALF mc_begin ALO corps ALF mc_END  
-{printf("\nProgramme syntaxiquement correcte. \n"); YYACCEPT;}
+{    printf("\t ___________________________________\n");
+printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |_________________________________|\n");
+ YYACCEPT;}
 ;
 /*----------------------- Structure de déclaration des variables ----------------------------*/
 declarationV : type listeV PVIR declarationV
@@ -77,7 +78,7 @@ instIF : mc_IF PO cond PF ALO corps ALF
 ;
 instWHILE : mc_WHILE PO cond PF ALO corps ALF 
 ;
-instFOR : mc_FOR PO IDF DPOINT mc_INTEGER DPOINT mc_INTEGER DPOINT mc_INTEGER PF ALO corps ALF
+instFOR : mc_FOR PO IDF DPOINT mc_INTEGER DPOINT mc_INTEGER DPOINT IDF PF ALO corps ALF
 ;
 instREADLN : mc_READLN PO IDF PF
 ;
@@ -120,7 +121,7 @@ int yywrap()
 return 1;
 }
 
+
 void yyerror(const char *s){
 printf("Error: %s ligne %d colonne %d sur l'entite %s\n",s,nb_ligne, Col, yytext ? yytext :"unknown");
 }
-
