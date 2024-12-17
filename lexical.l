@@ -7,42 +7,44 @@ extern int Col;
 extern YYSTYPE yylval;
 %}
 
-CHIFFRE           [0-9]
+
+CHIFFRE           [0-9] 
 LETTRE          [a-zA-Z]
-STR \'[^']*\'
+STR \'[^']*\'   
 IDF     {LETTRE}[a-z0-9_]*
 INTEGER         \(-{CHIFFRE}+\)|-{CHIFFRE}+|{CHIFFRE}+
 FLOAT    (\(\+{CHIFFRE}+\.{CHIFFRE}+\)|\(\-{CHIFFRE}+\.{CHIFFRE}+\)|{CHIFFRE}+\.{CHIFFRE}+)
 ESPACE      [ \t]+
 
 %%
-"PROGRAM"     {Col += strlen(yytext); return PROGRAM; }
-"VAR"          {Col += strlen(yytext); return VAR; }
-"BEGIN"        {Col += strlen(yytext); return begin; }
-"END"          {Col += strlen(yytext); return END; }
-"CONST"        {Col += strlen(yytext); return CONST; }
-"INTEGER"      {Col += strlen(yytext); return INTEGER; }
-"FLOAT"        {Col += strlen(yytext); return FLOAT; }
-"IF"           {Col += strlen(yytext); return IF; }
-"ELSE"         {Col += strlen(yytext); return ELSE; }
-"FOR"          {Col += strlen(yytext); return FOR; }
-"WHILE"        {Col += strlen(yytext); return WHILE; }
-"READLN"       {Col += strlen(yytext); return READLN; }
-"WRITELN"      {Col += strlen(yytext); return WRITELN; }
-"+"              {Col += strlen(yytext); return ADD; }
-"-"              {Col += strlen(yytext); return SUB; }
-"*"              {Col += strlen(yytext); return MUL; }
-"/"              {Col += strlen(yytext); return DIV; }
-"&&"              {Col += strlen(yytext); return AND; }
-"||"              {Col += strlen(yytext); return OR; }
-"!"              {Col += strlen(yytext); return NOT; }
-"=="             {Col += strlen(yytext); return EQ; }
-"!="             {Col += strlen(yytext); return NEG; }
-"<"              {Col += strlen(yytext); return INF; }
-"<="             {Col += strlen(yytext); return INF_E; }
-">"              {Col += strlen(yytext); return SUP; }
-">="             {Col += strlen(yytext); return SUP_E; }
-"="              {Col += strlen(yytext); return AFF; }
+
+"PROGRAM"     {Col += strlen(yytext); return mc_PROGRAM; }
+"VAR"          {Col += strlen(yytext); return mc_VAR; }
+"BEGIN"        {Col += strlen(yytext); return mc_begin; }
+"END"          {Col += strlen(yytext); return mc_END; }
+"CONST"        {Col += strlen(yytext); return mc_CONST; }
+"INTEGER"      {Col += strlen(yytext); return mc_INTEGER; }
+"FLOAT"        {Col += strlen(yytext); return mc_FLOAT; }
+"IF"           {Col += strlen(yytext); return mc_IF; }
+"ELSE"         {Col += strlen(yytext); return mc_ELSE; }
+"FOR"          {Col += strlen(yytext); return mc_FOR; }
+"WHILE"        {Col += strlen(yytext); return mc_WHILE; }
+"READLN"       {Col += strlen(yytext); return mc_READLN; }
+"WRITELN"      {Col += strlen(yytext); return mc_WRITELN; }
+"+"              {Col += strlen(yytext); return op_ADD; }
+"-"              {Col += strlen(yytext); return op_SUB; }
+"*"              {Col += strlen(yytext); return op_MUL; }
+"/"              {Col += strlen(yytext); return op_DIV; }
+"&&"              {Col += strlen(yytext); return op_AND; }
+"||"              {Col += strlen(yytext); return op_OR; }
+"!"              {Col += strlen(yytext); return op_NOT; }
+"=="             {Col += strlen(yytext); return op_EQ; }
+"!="             {Col += strlen(yytext); return op_NEG; }
+"<"              {Col += strlen(yytext); return op_INF; }
+"<="             {Col += strlen(yytext); return op_INF_E; }
+">"              {Col += strlen(yytext); return op_SUP; }
+">="             {Col += strlen(yytext); return op_SUP_E; }
+"="              {Col += strlen(yytext); return op_AFF; }
 "("              {Col += strlen(yytext); return PO; }
 ")"              {Col += strlen(yytext); return PF; }
 "["              {Col += strlen(yytext); return OB; }
@@ -65,6 +67,7 @@ ESPACE      [ \t]+
 			  return IDF;
 
 }
+
 {INTEGER} {
 yylval.entier=atoi(yytext);
  Col= Col + strlen(yytext);
@@ -76,8 +79,9 @@ yylval.entier=atoi(yytext);
 				printf("Lexical error dans %s 'Depassement de taille ' \n",yytext);
 				return ERR;
 				}
-   return INTEGER;
+   return mc_INTEGER;
 }
+
 {FLOAT} {
  yylval.reel=atof(yytext);
  if ((yytext[0] == '-'||yytext[0] == '+') && yytext[1] != '('){
@@ -85,13 +89,15 @@ yylval.entier=atoi(yytext);
         return ERR;
     }
   Col= Col + strlen(yytext);
-   return FLOAT;
+   return mc_FLOAT;
 }
 
-{ESPACE}    { Col += yyleng; } {/* erreur espace*/}
+
+{ESPACE}    { Col += yyleng; } 
 \n              { nb_ligne++; Col = 1; } 
 "//".*
 "/*"([^*]|\*+[^/])*\*+"/"
+
 
 . {
     printf("Erreur lexicale : Ligne %d, Colonne %d, Caractere non reconnu : %s\n", nb_ligne, Col, yytext);
@@ -100,3 +106,4 @@ yylval.entier=atoi(yytext);
 }
 
 %%
+

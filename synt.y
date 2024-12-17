@@ -11,50 +11,53 @@ int Col=1;
     int entier;
     float reel;
 } 
-%token PROGRAM VAR begin END CONST INTEGER FLOAT IF ELSE FOR WHILE READLN WRITELN
-%token ADD SUB MUL DIV AND OR NOT EQ NEG INF INF_E SUP SUP_E AFF PO PF OB FB ALO ALF VIR PVIR DPOINT AP
+/*----------------------- Définition des mots clé et opérend----------------------------*/
+%token mc_PROGRAM mc_VAR mc_begin mc_END mc_CONST mc_INTEGER mc_FLOAT mc_IF mc_ELSE mc_FOR mc_WHILE mc_READLN mc_WRITELN
+%token op_ADD op_SUB op_MUL op_DIV op_AND op_OR op_NOT op_EQ op_NEG op_INF op_INF_E op_SUP op_SUP_E op_AFF PO PF OB FB ALO ALF VIR PVIR DPOINT AP
 %token IDF ERR STR 
 
+/*----------------------- Les Priorités ----------------------------*/
+%nonassoc op_NOT
+%left op_OR
+%left op_AND
 
-%nonassoc NOT
-%left OR
-%left AND
+%left op_SUP op_SUP_E op_EQ op_NEG op_INF_E op_INF
 
-%left SUP SUP_E EQ NEG INF_E INF
-
-%left ADD SUB
-%left MUL DIV
+%left op_ADD op_SUB
+%left op_MUL op_DIV
 
 %start S
 %%
+/*----------------------- Syntax générale du Programme ----------------------------*/
 
-S: PROGRAM IDF VAR ALO declarationV ALF begin ALO corps ALF END  
+S: mc_PROGRAM IDF mc_VAR ALO declarationV ALF mc_begin ALO corps ALF mc_END  
 {printf("\nProgramme syntaxiquement correcte. \n"); YYACCEPT;}
 ;
-
+/*----------------------- Structure de déclaration des variables ----------------------------*/
 declarationV : type listeV PVIR declarationV
              | type listeT PVIR declarationV 
-	      | CONST listeC PVIR declarationV 
+	      | mc_CONST listeC PVIR declarationV 
 	      | type listeV PVIR 
-	      | CONST listeC PVIR 
+	      | mc_CONST listeC PVIR 
 	      | type listeT PVIR
 ;
 
-type : INTEGER
-     | FLOAT
+type : mc_INTEGER
+     | mc_FLOAT
 ;
-ARRAY : IDF OB INTEGER FB
+ARRAY : IDF OB mc_INTEGER FB
 listeT : ARRAY VIR listeT
        | ARRAY
 ;
-listeC :  IDF AFF type VIR listeC
-       |  IDF AFF type 
+listeC :  IDF op_AFF type VIR listeC
+       |  IDF op_AFF type 
 ;
 listeV : IDF VIR listeV
-       | IDF AFF type VIR listeV
+       | IDF op_AFF type VIR listeV
        | IDF
-       | IDF AFF type
+       | IDF op_AFF type
 ;
+/*----------------------- Structure du corps de programme ----------------------------*/
 corps : corps instruction 
       | instruction 
 ;
@@ -65,43 +68,43 @@ instruction : instAFF PVIR
             | instREADLN PVIR
             | instWRITELN PVIR
 ;
-instAFF : IDF AFF expression
+instAFF : IDF op_AFF expression
 ;
-instIF : IF PO cond PF ALO corps ALF 
-       | IF PO cond PF ALO corps ALF ELSE ALO corps ALF
+instIF : mc_IF PO cond PF ALO corps ALF 
+       | mc_IF PO cond PF ALO corps ALF mc_ELSE ALO corps ALF
 ;
-instWHILE : WHILE PO cond PF ALO corps ALF 
+instWHILE : mc_WHILE PO cond PF ALO corps ALF 
 ;
-instFOR : FOR PO IDF DPOINT INTEGER DPOINT INTEGER DPOINT INTEGER PF ALO corps ALF
+instFOR : mc_FOR PO IDF DPOINT mc_INTEGER DPOINT mc_INTEGER DPOINT mc_INTEGER PF ALO corps ALF
 ;
-instREADLN : READLN PO IDF PF
+instREADLN : mc_READLN PO IDF PF
 ;
 
-instWRITELN : WRITELN PO string PF 
+instWRITELN : mc_WRITELN PO string PF 
 ;
 string : string STR 
        | string IDF
 	   |STR
 	   |IDF
  ;
-expression : expression ADD expression
-           | expression SUB expression 
-           | expression MUL expression
-           | expression DIV expression 
+expression : expression op_ADD expression
+           | expression op_SUB expression 
+           | expression op_MUL expression
+           | expression op_DIV expression 
            | PO expression PF
-           | INTEGER 
-           | FLOAT
+           | mc_INTEGER 
+           | mc_FLOAT
            | IDF 
 ;
-cond : expression EQ expression 
-     | expression NEG expression 
-     | expression INF expression 
-     | expression SUP expression 
-     | expression INF_E expression 
-     | expression SUP_E expression 
-     | PO expression PF AND PO expression PF
-     | PO expression PF OR PO expression PF
-     | PO NOT expression PF
+cond : expression op_EQ expression 
+     | expression op_NEG expression 
+     | expression op_INF expression 
+     | expression op_SUP expression 
+     | expression op_INF_E expression 
+     | expression op_SUP_E expression 
+     | PO expression PF op_AND PO expression PF
+     | PO expression PF op_OR PO expression PF
+     | PO op_NOT expression PF
 ;
 %%
 int main()
@@ -114,7 +117,6 @@ int yywrap()
 return 1;
 }
 
-//Erreur GLOB AMROUSS 
 void yyerror(const char *s){
 printf("%s ligne %d colonne %d",s,nb_ligne, Col);
 }

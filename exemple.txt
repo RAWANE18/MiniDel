@@ -1,34 +1,36 @@
-// Example program with deliberate lexical and syntactic errors
-
-PROGRAM Test // Lexical Error: Identifier exceeds 7 characters
+PROGRAM Test 
 VAR {
-    INTEGER x, y, z1; // Lexical Error: Identifier exceeds 7 characters
-    FLOAT var;           // Lexical Error: Invalid identifier starting with a digit
-    CONST pi = 2;    // Syntax Error: Invalid constant format
+    INTEGER x, y, z1; 
+    FLOAT var;           
+    CONST pi = -(2);    
     INTEGER a, b;      
 }
 BEGIN
 {
- x=5.5;              // Syntax Error: Assigning FLOAT to INTEGER
-y=( x + 2 );            // Syntax Error: Missing closing parenthesis
-    z = a + b;            // Syntax Error: Use of undeclared variables
-    a = 10 / (5 - 5);     // Runtime Error: Division by zero (handled during runtime if implemented)
+    //One line comment
+    /*
+    block comment
+    */
+ x=5.5;              
+y=( x + 2 );            
+    z = a + b;            
+    a = 10 / (5 - 5);     
     
-    IF (x > 0) {          // Syntax Error: Missing closing bracket
+    IF (x > 0) {          
         b = b + 1;
     }
-ELSE {                // Syntax Error: Missing IF block
+ELSE {                
         a = a - 1;
     }
 
     FOR (i : 0: 1 : 5)
-    {       // Syntax Error: Missing condition or closing parenthesis
+    {       
     b = b + 1;}
 
-    WHILE (z != 0 ){       // Syntax Error: Missing closing parenthesis
+    WHILE (z != 0 ){      
         z = z - 1;
     }
 
     WRITELN('Value of x: ' x); 
-    }// Syntax Error: Invalid function name (writeln expected)
-END                        // Syntax Error: Missing period
+    }
+END                        

@@ -106,33 +106,33 @@ int Col=1;
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     PROGRAM = 258,
-     VAR = 259,
-     begin = 260,
-     END = 261,
-     CONST = 262,
-     INTEGER = 263,
-     FLOAT = 264,
-     IF = 265,
-     ELSE = 266,
-     FOR = 267,
-     WHILE = 268,
-     READLN = 269,
-     WRITELN = 270,
-     ADD = 271,
-     SUB = 272,
-     MUL = 273,
-     DIV = 274,
-     AND = 275,
-     OR = 276,
-     NOT = 277,
-     EQ = 278,
-     NEG = 279,
-     INF = 280,
-     INF_E = 281,
-     SUP = 282,
-     SUP_E = 283,
-     AFF = 284,
+     mc_PROGRAM = 258,
+     mc_VAR = 259,
+     mc_begin = 260,
+     mc_END = 261,
+     mc_CONST = 262,
+     mc_INTEGER = 263,
+     mc_FLOAT = 264,
+     mc_IF = 265,
+     mc_ELSE = 266,
+     mc_FOR = 267,
+     mc_WHILE = 268,
+     mc_READLN = 269,
+     mc_WRITELN = 270,
+     op_ADD = 271,
+     op_SUB = 272,
+     op_MUL = 273,
+     op_DIV = 274,
+     op_AND = 275,
+     op_OR = 276,
+     op_NOT = 277,
+     op_EQ = 278,
+     op_NEG = 279,
+     op_INF = 280,
+     op_INF_E = 281,
+     op_SUP = 282,
+     op_SUP_E = 283,
+     op_AFF = 284,
      PO = 285,
      PF = 286,
      OB = 287,
@@ -490,12 +490,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    31,    31,    35,    36,    37,    38,    39,    40,    43,
-      44,    46,    47,    48,    50,    51,    53,    54,    55,    56,
-      58,    59,    61,    62,    63,    64,    65,    66,    68,    70,
-      71,    73,    75,    77,    80,    82,    83,    84,    85,    87,
-      88,    89,    90,    91,    92,    93,    94,    96,    97,    98,
-      99,   100,   101,   102,   103,   104
+       0,    33,    33,    37,    38,    39,    40,    41,    42,    45,
+      46,    48,    49,    50,    52,    53,    55,    56,    57,    58,
+      61,    62,    64,    65,    66,    67,    68,    69,    71,    73,
+      74,    76,    78,    80,    83,    85,    86,    87,    88,    90,
+      91,    92,    93,    94,    95,    96,    97,    99,   100,   101,
+     102,   103,   104,   105,   106,   107
 };
 #endif
 
@@ -504,14 +504,15 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "PROGRAM", "VAR", "begin", "END",
-  "CONST", "INTEGER", "FLOAT", "IF", "ELSE", "FOR", "WHILE", "READLN",
-  "WRITELN", "ADD", "SUB", "MUL", "DIV", "AND", "OR", "NOT", "EQ", "NEG",
-  "INF", "INF_E", "SUP", "SUP_E", "AFF", "PO", "PF", "OB", "FB", "ALO",
-  "ALF", "VIR", "PVIR", "DPOINT", "AP", "IDF", "ERR", "STR", "$accept",
-  "S", "declarationV", "type", "ARRAY", "listeT", "listeC", "listeV",
-  "corps", "instruction", "instAFF", "instIF", "instWHILE", "instFOR",
-  "instREADLN", "instWRITELN", "string", "expression", "cond", 0
+  "$end", "error", "$undefined", "mc_PROGRAM", "mc_VAR", "mc_begin",
+  "mc_END", "mc_CONST", "mc_INTEGER", "mc_FLOAT", "mc_IF", "mc_ELSE",
+  "mc_FOR", "mc_WHILE", "mc_READLN", "mc_WRITELN", "op_ADD", "op_SUB",
+  "op_MUL", "op_DIV", "op_AND", "op_OR", "op_NOT", "op_EQ", "op_NEG",
+  "op_INF", "op_INF_E", "op_SUP", "op_SUP_E", "op_AFF", "PO", "PF", "OB",
+  "FB", "ALO", "ALF", "VIR", "PVIR", "DPOINT", "AP", "IDF", "ERR", "STR",
+  "$accept", "S", "declarationV", "type", "ARRAY", "listeT", "listeC",
+  "listeV", "corps", "instruction", "instAFF", "instIF", "instWHILE",
+  "instFOR", "instREADLN", "instWRITELN", "string", "expression", "cond", 0
 };
 #endif
 
@@ -1495,14 +1496,14 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 32 "synt.y"
+#line 34 "synt.y"
     {printf("\nProgramme syntaxiquement correcte. \n"); YYACCEPT;;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1506 "synt.tab.c"
+#line 1507 "synt.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1714,7 +1715,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 106 "synt.y"
+#line 109 "synt.y"
 
 int main()
 {yyparse();
@@ -1726,7 +1727,6 @@ int yywrap()
 return 1;
 }
 
-//Erreur GLOB AMROUSS 
 void yyerror(const char *s){
 printf("%s ligne %d colonne %d",s,nb_ligne, Col);
 }
