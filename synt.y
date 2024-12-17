@@ -1,6 +1,7 @@
 %{
 #include <string.h>
 #include <stdio.h>
+#include "ts.h"
 void yyerror(const char *s);
 extern char *yytext;
 int yylex();

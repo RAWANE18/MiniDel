@@ -1,6 +1,7 @@
 %{
 #include <string.h>
 #include "synt.tab.h"
+#include "TS.h"
 extern YYSTYPE yylval;
 extern int nb_ligne;
 extern int Col;
