@@ -4,9 +4,9 @@
 extern YYSTYPE yylval;
 extern int nb_ligne;
 extern int Col;
+int index;
 extern YYSTYPE yylval;
 %}
-
 
 CHIFFRE           [0-9] 
 LETTRE          [a-zA-Z]
@@ -18,42 +18,42 @@ ESPACE      [ \t]+
 
 %%
 
-"PROGRAM"     {Col += strlen(yytext); return mc_PROGRAM; }
-"VAR"          {Col += strlen(yytext); return mc_VAR; }
-"BEGIN"        {Col += strlen(yytext); return mc_begin; }
-"END"          {Col += strlen(yytext); return mc_END; }
-"CONST"        {Col += strlen(yytext); return mc_CONST; }
-"INTEGER"      {Col += strlen(yytext); return mc_INTEGER; }
-"FLOAT"        {Col += strlen(yytext); return mc_FLOAT; }
-"IF"           {Col += strlen(yytext); return mc_IF; }
-"ELSE"         {Col += strlen(yytext); return mc_ELSE; }
-"FOR"          {Col += strlen(yytext); return mc_FOR; }
-"WHILE"        {Col += strlen(yytext); return mc_WHILE; }
-"READLN"       {Col += strlen(yytext); return mc_READLN; }
-"WRITELN"      {Col += strlen(yytext); return mc_WRITELN; }
-"+"              {Col += strlen(yytext); return op_ADD; }
-"-"              {Col += strlen(yytext); return op_SUB; }
-"*"              {Col += strlen(yytext); return op_MUL; }
-"/"              {Col += strlen(yytext); return op_DIV; }
-"&&"              {Col += strlen(yytext); return op_AND; }
-"||"              {Col += strlen(yytext); return op_OR; }
-"!"              {Col += strlen(yytext); return op_NOT; }
-"=="             {Col += strlen(yytext); return op_EQ; }
-"!="             {Col += strlen(yytext); return op_NEG; }
-"<"              {Col += strlen(yytext); return op_INF; }
-"<="             {Col += strlen(yytext); return op_INF_E; }
-">"              {Col += strlen(yytext); return op_SUP; }
-">="             {Col += strlen(yytext); return op_SUP_E; }
-"="              {Col += strlen(yytext); return op_AFF; }
-"("              {Col += strlen(yytext); return PO; }
-")"              {Col += strlen(yytext); return PF; }
-"["              {Col += strlen(yytext); return OB; }
-"]"              {Col += strlen(yytext); return FB; }
-"{"              {Col += strlen(yytext); return ALO; }
-"}"              {Col += strlen(yytext); return ALF; }
-","              {Col += strlen(yytext); return VIR; }
-";"              {Col += strlen(yytext); return PVIR; }
-":"              {Col += strlen(yytext); return DPOINT; }
+"PROGRAM"     {index = rechercher(yytext, "Mot cle", "", "", 2); Col += strlen(yytext); return mc_PROGRAM; }
+"VAR"          {index = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_VAR; }
+"BEGIN"        {index = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_begin; }
+"END"          {index = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_END; }
+"CONST"        {index = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_CONST; }
+"INTEGER"      {index = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_INTEGER; }
+"FLOAT"        {index = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_FLOAT; }
+"IF"           {index = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_IF; }
+"ELSE"         {index = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_ELSE; }
+"FOR"          {index = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_FOR; }
+"WHILE"        {index = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_WHILE; }
+"READLN"       {index = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_READLN; }
+"WRITELN"      {index = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_WRITELN; }
+"+"              {index = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_ADD; }
+"-"              {index = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_SUB; }
+"*"              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_MUL; }
+"/"              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_DIV; }
+"&&"              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_AND; }
+"||"             { index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_OR; }
+"!"              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_NOT; }
+"=="             {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_EQ; }
+"!="             {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_NEG; }
+"<"              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_INF; }
+"<="             {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_INF_E; }
+">"              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_SUP; }
+">="             {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_SUP_E; }
+"="              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_AFF; }
+"("              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PO; }
+")"              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PF; }
+"["              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return OB; }
+"]"              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return FB; }
+"{"              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return ALO; }
+"}"              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return ALF; }
+","              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return VIR; }
+";"              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PVIR; }
+":"              {index = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return DPOINT; }
 {STR}            {Col += strlen(yytext); return STR; }
 {IDF} {
 
@@ -63,7 +63,7 @@ ESPACE      [ \t]+
 			  }
         yylval.str=strdup(yytext);
 			   Col= Col + strlen(yytext);
-        
+          index=rechercher(yytext, "Identificateur", "IDF", yylval.str, 0);
 			  return IDF;
 
 }
@@ -79,6 +79,7 @@ yylval.entier=atoi(yytext);
 				printf("Lexical error dans %s 'Depassement de taille ' \n",yytext);
 				return ERR;
 				}
+         index=rechercher(yytext, "Variable", "INTEGER", yylval.entier, 0);
    return mc_INTEGER;
 }
 
@@ -89,6 +90,7 @@ yylval.entier=atoi(yytext);
         return ERR;
     }
   Col= Col + strlen(yytext);
+      index=rechercher(yytext, "Variable", "FLOAT", yylval.reel, 0);
    return mc_FLOAT;
 }
 
