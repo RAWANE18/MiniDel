@@ -2,7 +2,7 @@ PROGRAM Test
 VAR {
     INTEGER x, y, z1; 
     FLOAT var;           
-    CONST pi = -(2);    
+    CONST pi = (-2);    
     INTEGER a, b;      
 }
 BEGIN

@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 void yyerror(const char *s);
+extern char *yytext;
 int yylex();
 int nb_ligne=1;
 int Col=1;
@@ -118,5 +119,6 @@ return 1;
 }
 
 void yyerror(const char *s){
-printf("%s ligne %d colonne %d",s,nb_ligne, Col);
+printf("Error: %s ligne %d colonne %d sur l'entite %s\n",s,nb_ligne, Col, yytext ? yytext :"unknown");
 }
+
