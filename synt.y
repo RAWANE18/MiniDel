@@ -5,7 +5,6 @@
 void yyerror(const char *s);
 extern char *yytext;
 int yylex();
-extern FILE *yyin;
 int nb_ligne=1;
 int Col=1;
 %}
