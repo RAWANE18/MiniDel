@@ -5,7 +5,7 @@ INTEGER L, N_1, m, n,i,j, Nombre ;
 INTEGER Tab[9];
 INTEGER Aa;
 FLOAT Mi, hi, Ti, Si;
-CONST Idf_1 = 32765.9 ;
+CONST Idf_1 = 32765555555.9 ;
 INTEGER Tab2[2] ;
 FLOAT Tab3[0] ;
 // commentaire
@@ -13,7 +13,7 @@ FLOAT Tab3[0] ;
 BEGIN
 {
 
-/* commentaire */
+/* commentaire 
 IF(Aa>L) {  
         Mi=L+2.6;
         WHILE(i<n) { i=i+2;
@@ -25,8 +25,7 @@ IF(Aa>L) {
                     }
       }
 
-/* saisie de 
-plusieurs valeurs */
+
 
 WHILE (i <n) { i=i+2;
     WRITELN('Entrez un nombre :');
