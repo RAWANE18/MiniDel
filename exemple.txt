@@ -1,11 +1,10 @@
 PROGRAM Acad
 VAR{
 // commentaire
-INTEGER L, N_1=5, m, n,i,j, Nombre ;
-INTEGER Aa=62;
-FLOAT Mi, hi, Ti, Si=55.2;
-CONST Idf_1 = 359 ;
-// commentaire
+INTEGER B=63.3;
+FLOAT B=63.8;
+CONST M=8;
+
 }
 BEGIN
 

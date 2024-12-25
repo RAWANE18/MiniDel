@@ -63,7 +63,8 @@ ESPACE      [ \t]+
 			  }
         yylval.str=strdup(yytext);
 			   Col= Col + strlen(yytext);
-        idx=rechercher(yytext, "Identificateur", "", "", 0);
+     
+       // idx=rechercher(yytext, "Identificateur", "", "", 0);
 			  return IDF;
 
 }

@@ -890,14 +890,15 @@ YY_RULE_SETUP
 			  }
         yylval.str=strdup(yytext);
 			   Col= Col + strlen(yytext);
-        idx=rechercher(yytext, "Identificateur", "", "", 0);
+     
+       // idx=rechercher(yytext, "Identificateur", "", "", 0);
 			  return IDF;
 
 }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 72 "lexical.l"
+#line 73 "lexical.l"
 {
  Col= Col + strlen(yytext);
    if (yytext[0] == '-' && yytext[1] != '(') {
@@ -917,7 +918,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 89 "lexical.l"
+#line 90 "lexical.l"
 {
  if ((yytext[0] == '-'||yytext[0] == '+') && yytext[1] != '('){
         printf("Erreur lexicale : Ligne %d, Colonne %d, Reel signe sans parentheses : '%s'\n", nb_ligne, Col, yytext);
@@ -931,27 +932,27 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 101 "lexical.l"
+#line 102 "lexical.l"
 { Col += yyleng; } 
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 102 "lexical.l"
+#line 103 "lexical.l"
 { nb_ligne++; Col = 1; } 
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 103 "lexical.l"
+#line 104 "lexical.l"
 
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 104 "lexical.l"
+#line 105 "lexical.l"
 
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 107 "lexical.l"
+#line 108 "lexical.l"
 {
     printf("Erreur lexicale : Ligne %d, Colonne %d, Caractere non reconnu : %s\n", nb_ligne, Col, yytext);
     Col += strlen(yytext);
@@ -960,10 +961,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 113 "lexical.l"
+#line 114 "lexical.l"
 ECHO;
 	YY_BREAK
-#line 967 "lex.yy.c"
+#line 968 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1849,5 +1850,5 @@ int main()
 	return 0;
 	}
 #endif
-#line 113 "lexical.l"
+#line 114 "lexical.l"
 

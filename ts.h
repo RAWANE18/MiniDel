@@ -24,8 +24,9 @@ extern int cpt, cpts, cptm;
 void init();
 void inserer(char entite[], char code[], char type[], char val[], int i, int y);
 int rechercher(char entite[], char code[], char type[], char val[], int y);
-void insererVal(char entite[], char val[]);
 void inserertype(char entite[], char type[]);
+int declarer(char entite[]);
+int insererVal(char entite[], char val[]);
 void afficher();
 
 #endif

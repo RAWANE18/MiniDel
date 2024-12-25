@@ -78,7 +78,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
     switch (y)
     {
     case 0: // Table des IDF et CONST
-        for (i = 0; i < 1000 && tab[i].state > 0; i++)
+        for (i = 0; i < 1000 && tab[i].state==1; i++)
         {
             if (strcmp(entite, tab[i].name) == 0)
             {
@@ -89,6 +89,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
         if (i < 1000)
         {
             inserer(entite, code, type, val, i, 0);
+           
         }
         break;
 
@@ -103,6 +104,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
         if (i < 50)
         {
             inserer(entite, code, "", "", i, 1);
+           
         }
         break;
 
@@ -128,7 +130,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
 void insererVal(char entite[],char val[]){
     int pos;
 	pos = rechercher(entite, "","","",0);
-    strcpy(tab[pos].val, val);
+    if(pos!=-1) {strcpy(tab[pos].val, val);}
 }
 void inserertype(char entite[], char type[]){
 
@@ -137,6 +139,15 @@ void inserertype(char entite[], char type[]){
 	pos = rechercher(entite, "","","",0);
     if(pos!=-1) {strcpy(tab[pos].type, type);}	
 	
+}
+int declarer(char entite[]){
+	 for (int i = 0; i < 1000 && tab[i].state==1; i++)
+        {
+            if (strcmp(tab[i].code, "Identificateur") == 0 && strcmp(entite, tab[i].name) == 0) {
+            return 1;
+            }
+        }
+         return 0;
 }
 void afficher()
 {

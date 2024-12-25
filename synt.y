@@ -42,7 +42,7 @@ declarationV : type listeV PVIR declarationV
              | type listeT PVIR declarationV 
 	      | mc_CONST listeC PVIR declarationV 
 	      | type listeV PVIR 
-	      | mc_CONST listeC PVIR 
+	      | mc_CONST listeC PVIR
 	      | type listeT PVIR
 ;
 type : mc_INTEGER {strcpy(svtype,$1);}
@@ -53,16 +53,16 @@ ARRAY : IDF OB INT FB
 listeT : ARRAY VIR listeT 
        | ARRAY 
 ;
-listeC :  IDF op_AFF val VIR listeC {inserertype($1,"CONSTANTE");insererVal($1,tempval)}
-       |  IDF op_AFF val {inserertype($1,"CONSTANTE");insererVal($1,tempval)}
+listeC :  IDF op_AFF val VIR listeC {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "", "", 0);inserertype($1,"CONSTANTE");insererVal($1,tempval);}else{yyerror("declared");YYABORT; }}
+       |  IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "", "", 0);inserertype($1,"CONSTANTE");insererVal($1,tempval);}else{yyerror("declared");YYABORT; }}
 ;
 val:INT {strcpy(tempval,$1);}
    |REEL {strcpy(tempval,$1);}
 ;
 listeV : IDF VIR listeV 
-       | IDF op_AFF val VIR listeV {inserertype($1,svtype);insererVal($1,tempval)}
+       | IDF op_AFF val VIR listeV {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "", "", 0);inserertype($1,svtype);insererVal($1,tempval);}else{yyerror("declared");YYABORT; }}
        | IDF 
-       | IDF op_AFF val {inserertype($1,svtype);insererVal($1,tempval)}
+       | IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "", "", 0);inserertype($1,svtype);insererVal($1,tempval);}else{yyerror("declared");YYABORT; }}
 ;
 /*----------------------- Structure du corps de programme ----------------------------*/
 corps : corps instruction 
@@ -117,6 +117,7 @@ cond : expression op_EQ expression
 int main()
 {yyparse();
 afficher();
+
   return 0;
 }
 
