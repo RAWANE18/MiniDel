@@ -1524,6 +1524,13 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
     {strcpy(svtype,(yyvsp[(1) - (1)].str));;}
     break;
 
+  case 11:
+
+/* Line 1455 of yacc.c  */
+#line 51 "synt.y"
+    {if(declarer((yyvsp[(1) - (4)].str))!=1){ yyerror("declared");YYABORT;};}
+    break;
+
   case 14:
 
 /* Line 1455 of yacc.c  */
@@ -1552,11 +1559,25 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
     {strcpy(tempval,(yyvsp[(1) - (1)].str));;}
     break;
 
+  case 18:
+
+/* Line 1455 of yacc.c  */
+#line 62 "synt.y"
+    {if(declarer((yyvsp[(1) - (3)].str))!=1){ yyerror("declared");YYABORT;};}
+    break;
+
   case 19:
 
 /* Line 1455 of yacc.c  */
 #line 63 "synt.y"
     {if(declarer((yyvsp[(1) - (5)].str))!=1){int idx; idx=rechercher((yyvsp[(1) - (5)].str), "Identificateur", "", "", 0);inserertype((yyvsp[(1) - (5)].str),svtype);insererVal((yyvsp[(1) - (5)].str),tempval);}else{yyerror("declared");YYABORT; };}
+    break;
+
+  case 20:
+
+/* Line 1455 of yacc.c  */
+#line 64 "synt.y"
+    {if(declarer((yyvsp[(1) - (1)].str))!=1){ yyerror("declared");YYABORT;};}
     break;
 
   case 21:
@@ -1566,10 +1587,52 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
     {if(declarer((yyvsp[(1) - (3)].str))!=1){int idx; idx=rechercher((yyvsp[(1) - (3)].str), "Identificateur", "", "", 0);inserertype((yyvsp[(1) - (3)].str),svtype);insererVal((yyvsp[(1) - (3)].str),tempval);}else{yyerror("declared");YYABORT; };}
     break;
 
+  case 30:
+
+/* Line 1455 of yacc.c  */
+#line 78 "synt.y"
+    {if(declarer((yyvsp[(1) - (3)].str))!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(1) - (3)].str), nb_ligne,Col);YYABORT;};}
+    break;
+
+  case 34:
+
+/* Line 1455 of yacc.c  */
+#line 85 "synt.y"
+    {if(declarer((yyvsp[(3) - (13)].str))!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(1) - (13)].str), nb_ligne,Col);YYABORT;}else if(declarer((yyvsp[(9) - (13)].str))!=1){printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(9) - (13)].str), nb_ligne,Col);YYABORT;};}
+    break;
+
+  case 35:
+
+/* Line 1455 of yacc.c  */
+#line 87 "synt.y"
+    {if(declarer((yyvsp[(3) - (4)].str))!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(3) - (4)].str), nb_ligne,Col);YYABORT;};}
+    break;
+
+  case 38:
+
+/* Line 1455 of yacc.c  */
+#line 93 "synt.y"
+    {if(declarer((yyvsp[(2) - (2)].str))!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(2) - (2)].str), nb_ligne,Col);YYABORT;};}
+    break;
+
+  case 40:
+
+/* Line 1455 of yacc.c  */
+#line 95 "synt.y"
+    {if(declarer((yyvsp[(1) - (1)].str))!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(1) - (1)].str), nb_ligne,Col);YYABORT;};}
+    break;
+
+  case 48:
+
+/* Line 1455 of yacc.c  */
+#line 104 "synt.y"
+    {if(declarer((yyvsp[(1) - (1)].str))!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(1) - (1)].str), nb_ligne,Col);YYABORT;};}
+    break;
+
 
 
 /* Line 1455 of yacc.c  */
-#line 1573 "synt.tab.c"
+#line 1636 "synt.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);

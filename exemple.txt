@@ -2,9 +2,7 @@ PROGRAM Acad
 VAR{
 // commentaire
 INTEGER B=63.3;
-FLOAT B=63.8;
 CONST M=8;
-
 }
 BEGIN
 
