@@ -39,17 +39,19 @@ void init()
     cptm = 0;
 }
 
+
 void inserer(char entite[], char code[], char type[], char val[], int i, int y)
 {
 
     switch (y)
     {
     case 0: //  table des IDF et CONSTANTES
-        tab[i].state = 1;
+         tab[i].state = 1;
         strcpy(tab[i].name, entite);
         strcpy(tab[i].code, code);
         strcpy(tab[i].type, type);
         strcpy(tab[i].val, val);
+       
         cpt++;
         break;
 
@@ -69,16 +71,18 @@ void inserer(char entite[], char code[], char type[], char val[], int i, int y)
     }
 }
 
+
 int rechercher(char entite[], char code[], char type[], char val[], int y)
 {
     int i;
     switch (y)
     {
     case 0: // Table des IDF et CONST
-        for (i = 0; i < 1000 && tab[i].state == 1; i++)
+        for (i = 0; i < 1000 && tab[i].state > 0; i++)
         {
             if (strcmp(entite, tab[i].name) == 0)
             {
+               
                 return i;
             }
         }
@@ -121,7 +125,19 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
         return -1;
     }
 }
+void insererVal(char entite[],char val[]){
+    int pos;
+	pos = rechercher(entite, "","","",0);
+    strcpy(tab[pos].val, val);
+}
+void inserertype(char entite[], char type[]){
 
+	
+	int pos;
+	pos = rechercher(entite, "","","",0);
+    if(pos!=-1) {strcpy(tab[pos].type, type);}	
+	
+}
 void afficher()
 {
     int i;

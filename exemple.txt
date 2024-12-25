@@ -1,22 +1,20 @@
 PROGRAM Acad
 VAR{
 // commentaire
-INTEGER L, N_1, m, n,i,j, Nombre ;
-INTEGER Tab[9];
-INTEGER Aa;
-FLOAT Mi, hi, Ti, Si;
-CONST Idf_1 = 32765.9 ;
-INTEGER Tab2[2] ;
-FLOAT Tab3[0] ;
+INTEGER L, N_1=5, m, n,i,j, Nombre ;
+INTEGER Aa=62;
+FLOAT Mi, hi, Ti, Si=55.2;
+CONST Idf_1 = 359 ;
 // commentaire
 }
 BEGIN
-{
+
 
 /* commentaire */
 IF(Aa>L) {  
-        Mi=L+2.6;
-        WHILE(i<n) { i=i+2;
+      
+        WHILE(i<n) { 
+            i=i+2;
         WRITELN('la valeur de i :' i );
                      }
       } ELSE{ 
@@ -37,5 +35,5 @@ WHILE (i <n) { i=i+2;
     i=i+2;
     }
 }
-}
+
 END

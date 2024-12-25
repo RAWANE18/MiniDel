@@ -7,14 +7,16 @@ extern char *yytext;
 int yylex();
 int nb_ligne=1;
 int Col=1;
+char tempval[20];
+char svtype[20];
 %}
 %union {
     char *str; 
 } 
 /*----------------------- Définition des mots clé et opérends----------------------------*/
-%token mc_PROGRAM mc_VAR mc_begin mc_END mc_CONST mc_INTEGER mc_FLOAT mc_IF mc_ELSE mc_FOR mc_WHILE mc_READLN mc_WRITELN
+%token mc_PROGRAM mc_VAR mc_begin mc_END <str>mc_CONST <str>mc_INTEGER <str>mc_FLOAT mc_IF mc_ELSE mc_FOR mc_WHILE mc_READLN mc_WRITELN
 %token op_ADD op_SUB op_MUL op_DIV op_AND op_OR op_NOT op_EQ op_NEG op_INF op_INF_E op_SUP op_SUP_E op_AFF PO PF OB FB ALO ALF VIR PVIR DPOINT AP
-%token IDF ERR STR 
+%token <str>IDF ERR STR <str>REEL <str>INT
 
 /*----------------------- Les Priorités ----------------------------*/
 %nonassoc op_NOT
@@ -30,7 +32,7 @@ int Col=1;
 %%
 /*----------------------- Syntax générale du Programme ----------------------------*/
 
-S: mc_PROGRAM IDF mc_VAR ALO declarationV ALF mc_begin ALO corps ALF mc_END  
+S: mc_PROGRAM IDF mc_VAR ALO declarationV ALF mc_begin corps mc_END  
 {    printf("\t ___________________________________\n");
 printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |_________________________________|\n");
  YYACCEPT;}
@@ -43,21 +45,24 @@ declarationV : type listeV PVIR declarationV
 	      | mc_CONST listeC PVIR 
 	      | type listeT PVIR
 ;
-
-type : mc_INTEGER
-     | mc_FLOAT
+type : mc_INTEGER {strcpy(svtype,$1);}
+     | mc_FLOAT {strcpy(svtype,$1);}
 ;
-ARRAY : IDF OB mc_INTEGER FB
-listeT : ARRAY VIR listeT
-       | ARRAY
+ARRAY : IDF OB INT FB
 ;
-listeC :  IDF op_AFF type VIR listeC
-       |  IDF op_AFF type 
+listeT : ARRAY VIR listeT 
+       | ARRAY 
 ;
-listeV : IDF VIR listeV
-       | IDF op_AFF type VIR listeV
-       | IDF
-       | IDF op_AFF type
+listeC :  IDF op_AFF val VIR listeC {inserertype($1,"CONSTANTE");insererVal($1,tempval)}
+       |  IDF op_AFF val {inserertype($1,"CONSTANTE");insererVal($1,tempval)}
+;
+val:INT {strcpy(tempval,$1);}
+   |REEL {strcpy(tempval,$1);}
+;
+listeV : IDF VIR listeV 
+       | IDF op_AFF val VIR listeV {inserertype($1,svtype);insererVal($1,tempval)}
+       | IDF 
+       | IDF op_AFF val {inserertype($1,svtype);insererVal($1,tempval)}
 ;
 /*----------------------- Structure du corps de programme ----------------------------*/
 corps : corps instruction 
@@ -77,7 +82,7 @@ instIF : mc_IF PO cond PF ALO corps ALF
 ;
 instWHILE : mc_WHILE PO cond PF ALO corps ALF 
 ;
-instFOR : mc_FOR PO IDF DPOINT mc_INTEGER DPOINT mc_INTEGER DPOINT IDF PF ALO corps ALF
+instFOR : mc_FOR PO IDF DPOINT INT DPOINT INT DPOINT IDF PF ALO corps ALF
 ;
 instREADLN : mc_READLN PO IDF PF
 ;
@@ -94,8 +99,8 @@ expression : expression op_ADD expression
            | expression op_MUL expression
            | expression op_DIV expression 
            | PO expression PF
-           | mc_INTEGER 
-           | mc_FLOAT
+           | INT 
+           | REEL
            | IDF 
 ;
 cond : expression op_EQ expression 

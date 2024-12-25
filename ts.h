@@ -1,7 +1,8 @@
 #ifndef TS_H
 #define TS_H
 
-typedef struct {
+typedef struct
+{
     int state;
     char name[20];
     char code[20];
@@ -9,7 +10,8 @@ typedef struct {
     char val[20];
 } element;
 
-typedef struct {
+typedef struct
+{
     int state;
     char name[20];
     char type[20];
@@ -22,6 +24,8 @@ extern int cpt, cpts, cptm;
 void init();
 void inserer(char entite[], char code[], char type[], char val[], int i, int y);
 int rechercher(char entite[], char code[], char type[], char val[], int y);
+void insererVal(char entite[], char val[]);
+void inserertype(char entite[], char type[]);
 void afficher();
 
-#endif 
+#endif

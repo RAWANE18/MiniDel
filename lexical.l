@@ -13,8 +13,8 @@ CHIFFRE           [0-9]
 LETTRE          [a-zA-Z]
 STR \'[^']*\'   
 IDF     {LETTRE}[a-z0-9_]*
-INTEGER         \(-{CHIFFRE}+\)|-{CHIFFRE}+|{CHIFFRE}+
-FLOAT    (\(\+{CHIFFRE}+\.{CHIFFRE}+\)|\(\-{CHIFFRE}+\.{CHIFFRE}+\)|{CHIFFRE}+\.{CHIFFRE}+)
+INT         \(-{CHIFFRE}+\)|-{CHIFFRE}+|{CHIFFRE}+
+REEL    (\(\+{CHIFFRE}+\.{CHIFFRE}+\)|\(\-{CHIFFRE}+\.{CHIFFRE}+\)|{CHIFFRE}+\.{CHIFFRE}+)
 ESPACE      [ \t]+
 
 %%
@@ -29,7 +29,7 @@ ESPACE      [ \t]+
 "WHILE"        {idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_WHILE; }
 "READLN"       {idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_READLN; }
 "WRITELN"      {idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_WRITELN; }
-"CONST"        {yylval.str=strdup("CONST"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_CONST; }
+"CONST"        {yylval.str=strdup("CONST");  idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_CONST; }
 "INTEGER"      {yylval.str=strdup("INTEGER"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_INTEGER; }
 "FLOAT"        {yylval.str=strdup("FLOAT"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_FLOAT; }
 "+"              {idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_ADD; }
@@ -68,7 +68,8 @@ ESPACE      [ \t]+
 
 }
 
-{INTEGER} {
+
+{INT} {
  Col= Col + strlen(yytext);
    if (yytext[0] == '-' && yytext[1] != '(') {
         printf("Erreur lexicale : Ligne %d, Colonne %d, Entier signe sans parentheses : '%s'\n", nb_ligne, Col, yytext);
@@ -78,21 +79,22 @@ ESPACE      [ \t]+
 				printf("Lexical error dans %s 'Depassement de taille ' \n",yytext);
 				return ERR;
 				}
+         yylval.str=strdup(yytext);
         char value[20];
                       sprintf(value, "%d", atoi(yytext));
-         idx=rechercher(yytext, "Variable", "INTEGER", value, 0);
-   return mc_INTEGER;
+         
+   return INT;
 }
 
-{FLOAT} {
+{REEL} {
  if ((yytext[0] == '-'||yytext[0] == '+') && yytext[1] != '('){
         printf("Erreur lexicale : Ligne %d, Colonne %d, Reel signe sans parentheses : '%s'\n", nb_ligne, Col, yytext);
         return ERR;
     }
   Col= Col + strlen(yytext);
-  
-      idx=rechercher(yytext, "Variable", "FLOAT",yytext, 0);
-   return mc_FLOAT;
+   yylval.str=strdup(yytext);
+ 
+   return REEL;
 }
 
 

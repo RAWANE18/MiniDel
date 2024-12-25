@@ -78,7 +78,9 @@
      AP = 294,
      IDF = 295,
      ERR = 296,
-     STR = 297
+     STR = 297,
+     REEL = 298,
+     INT = 299
    };
 #endif
 
@@ -89,14 +91,14 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 11 "synt.y"
+#line 13 "synt.y"
 
     char *str; 
 
 
 
 /* Line 1676 of yacc.c  */
-#line 100 "synt.tab.h"
+#line 102 "synt.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
