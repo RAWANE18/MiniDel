@@ -9,14 +9,16 @@ int nb_ligne=1;
 int Col=1;
 char tempval[20];
 char svtype[20];
+char svcst[20];
+char svop[20];
 %}
 %union {
     char *str; 
 } 
 /*----------------------- Définition des mots clé et opérends----------------------------*/
 %token mc_PROGRAM mc_VAR mc_begin mc_END <str>mc_CONST <str>mc_INTEGER <str>mc_FLOAT mc_IF mc_ELSE mc_FOR mc_WHILE mc_READLN mc_WRITELN
-%token op_ADD op_SUB op_MUL op_DIV op_AND op_OR op_NOT op_EQ op_NEG op_INF op_INF_E op_SUP op_SUP_E op_AFF PO PF OB FB ALO ALF VIR PVIR DPOINT AP
-%token <str>IDF ERR STR <str>REEL <str>INT
+%token <str>op_ADD <str>op_SUB <str>op_MUL <str>op_DIV op_AND op_OR op_NOT op_EQ op_NEG op_INF op_INF_E op_SUP op_SUP_E op_AFF PO PF OB FB ALO ALF VIR PVIR DPOINT AP
+%token <str>IDF ERR STR <str>REEL <str>INT 
 
 /*----------------------- Les Priorités ----------------------------*/
 %nonassoc op_NOT
@@ -75,33 +77,55 @@ instruction : instAFF PVIR
             | instREADLN PVIR
             | instWRITELN PVIR
 ;
-instAFF : IDF op_AFF expression {if(declarer($1)!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}}
+instAFF : IDF op_AFF expression {if(declarer($1)!=1){ 
+        printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
+        YYABORT;}
+        if(div_zero(svcst,svop)!=0){
+printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);
+        YYABORT;
+        }
+        }
 ;
 instIF : mc_IF PO cond PF ALO corps ALF 
        | mc_IF PO cond PF ALO corps ALF mc_ELSE ALO corps ALF
 ;
 instWHILE : mc_WHILE PO cond PF ALO corps ALF 
 ;
-instFOR : mc_FOR PO IDF DPOINT INT DPOINT INT DPOINT IDF PF ALO corps ALF {if(declarer($3)!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}else if(declarer($9)!=1){printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$9, nb_ligne,Col);YYABORT;}}
+instFOR : mc_FOR PO IDF DPOINT INT DPOINT INT DPOINT IDF PF ALO corps ALF {if(declarer($3)!=1){  
+       printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
+       YYABORT;}
+       else if(declarer($9)!=1){
+              printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$9, nb_ligne,Col);
+              YYABORT;}}
 ;
-instREADLN : mc_READLN PO IDF PF {if(declarer($3)!=1){ printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$3, nb_ligne,Col);YYABORT;}}
+instREADLN : mc_READLN PO IDF PF {if(declarer($3)!=1){
+        printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$3, nb_ligne,Col);
+        YYABORT;}}
 ;
 
 instWRITELN : mc_WRITELN PO string PF 
 ;
 string : string STR 
-       | string IDF {if(declarer($2)!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$2, nb_ligne,Col);YYABORT;}}
+       | string IDF {if(declarer($2)!=1){ 
+               printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$2, nb_ligne,Col);
+               YYABORT;}}
 	|STR
-	|IDF {if(declarer($1)!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}}
+	|IDF {if(declarer($1)!=1){ 
+               printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
+               YYABORT;}}
  ;
-expression : expression op_ADD expression
-           | expression op_SUB expression 
-           | expression op_MUL expression
-           | expression op_DIV expression 
+
+expression : expression op_ADD expression  {strcpy(svop,$2);}
+           | expression op_SUB expression  {strcpy(svop,$2);}
+           | expression op_MUL expression {strcpy(svop,$2);}
+           | expression op_DIV expression {strcpy(svop,$2);}
            | PO expression PF
-           | INT 
-           | REEL
-           | IDF {if(declarer($1)!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}}
+           | INT {strcpy(svcst,$1);}
+           | REEL{strcpy(svcst,$1);}
+           | IDF {if(declarer($1)!=1){  
+              printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
+              YYABORT;}
+              strcpy(svcst,$1);}
 ;
 cond : expression op_EQ expression 
      | expression op_NEG expression 

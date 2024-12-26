@@ -32,30 +32,30 @@ ESPACE      [ \t]+
 "CONST"        {yylval.str=strdup("CONST");  idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_CONST; }
 "INTEGER"      {yylval.str=strdup("INTEGER"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_INTEGER; }
 "FLOAT"        {yylval.str=strdup("FLOAT"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_FLOAT; }
-"+"              {idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_ADD; }
-"-"              {idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_SUB; }
-"*"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_MUL; }
-"/"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_DIV; }
-"&&"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_AND; }
-"||"             { idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_OR; }
-"!"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_NOT; }
-"=="             {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_EQ; }
-"!="             {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_NEG; }
-"<"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_INF; }
-"<="             {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_INF_E; }
-">"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_SUP; }
-">="             {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_SUP_E; }
-"="              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_AFF; }
-"("              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PO; }
-")"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PF; }
-"["              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return OB; }
-"]"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return FB; }
-"{"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return ALO; }
-"}"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return ALF; }
-","              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return VIR; }
-";"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PVIR; }
-":"              {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return DPOINT; }
-{STR}            {Col += strlen(yytext); return STR; }
+"+"            {yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_ADD; }
+"-"            {yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_SUB; }
+"*"            {yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_MUL; }
+"/"            {yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_DIV; }
+"&&"           {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_AND; }
+"||"           { idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_OR; }
+"!"            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_NOT; }
+"=="           {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_EQ; }
+"!="           {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_NEG; }
+"<"            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_INF; }
+"<="           {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_INF_E; }
+">"            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_SUP; }
+">="           {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_SUP_E; }
+"="            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_AFF; }
+"("            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PO; }
+")"            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PF; }
+"["            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return OB; }
+"]"            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return FB; }
+"{"            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return ALO; }
+"}"            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return ALF; }
+","            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return VIR; }
+";"            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PVIR; }
+":"            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return DPOINT; }
+{STR}          {Col += strlen(yytext); return STR; }
 {IDF} {
 
 			  if (yyleng>=7){ printf ("warning: %s trop long a la ligne %d a la colonne %d \n ",yytext,nb_ligne, Col);

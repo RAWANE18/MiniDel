@@ -763,22 +763,22 @@ YY_RULE_SETUP
 case 14:
 YY_RULE_SETUP
 #line 35 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_ADD; }
+{yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_ADD; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 36 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_SUB; }
+{yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_SUB; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 37 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_MUL; }
+{yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_MUL; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 38 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_DIV; }
+{yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_DIV; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP

@@ -39,19 +39,18 @@ void init()
     cptm = 0;
 }
 
-
 void inserer(char entite[], char code[], char type[], char val[], int i, int y)
 {
 
     switch (y)
     {
     case 0: //  table des IDF et CONSTANTES
-         tab[i].state = 1;
+        tab[i].state = 1;
         strcpy(tab[i].name, entite);
         strcpy(tab[i].code, code);
         strcpy(tab[i].type, type);
         strcpy(tab[i].val, val);
-       
+
         cpt++;
         break;
 
@@ -71,25 +70,23 @@ void inserer(char entite[], char code[], char type[], char val[], int i, int y)
     }
 }
 
-
 int rechercher(char entite[], char code[], char type[], char val[], int y)
 {
     int i;
     switch (y)
     {
     case 0: // Table des IDF et CONST
-        for (i = 0; i < 1000 && tab[i].state==1; i++)
+        for (i = 0; i < 1000 && tab[i].state == 1; i++)
         {
             if (strcmp(entite, tab[i].name) == 0)
             {
-               
+
                 return i;
             }
         }
         if (i < 1000)
         {
             inserer(entite, code, type, val, i, 0);
-           
         }
         break;
 
@@ -104,7 +101,6 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
         if (i < 50)
         {
             inserer(entite, code, "", "", i, 1);
-           
         }
         break;
 
@@ -127,20 +123,44 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
         return -1;
     }
 }
-void insererVal(char entite[],char val[]){
+void insererVal(char entite[], char val[])
+{
     int pos;
-	pos = rechercher(entite, "","","",0);
-    if(pos!=-1) {strcpy(tab[pos].val, val);}
+    pos = rechercher(entite, "", "", "", 0);
+    if (pos != -1)
+    {
+        strcpy(tab[pos].val, val);
+    }
 }
 
-int declarer(char entite[]){
-	 for (int i = 0; i < 1000 && tab[i].state==1; i++)
+int declarer(char entite[])
+{
+    for (int i = 0; i < 1000 && tab[i].state == 1; i++)
+    {
+        if (strcmp(tab[i].code, "Identificateur") == 0 && strcmp(entite, tab[i].name) == 0)
         {
-            if (strcmp(tab[i].code, "Identificateur") == 0 && strcmp(entite, tab[i].name) == 0) {
             return 1;
-            }
         }
-         return 0;
+    }
+    return 0;
+}
+int div_zero(char entite[], char operand[])
+{
+    if (strcmp(operand, "/") == 0)
+    {
+        if (strcmp(entite, "0") == 0)
+        {
+            return 1;
+        }
+        int pos;
+        pos = rechercher(entite, "Identificateur", "", "", 0);
+        if (pos != -1 && strcmp(tab[pos].val, "0") == 0)
+        {
+
+            return 1;
+        }
+    }
+    return 0;
 }
 void afficher()
 {

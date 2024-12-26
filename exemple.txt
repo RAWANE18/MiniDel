@@ -3,34 +3,8 @@ VAR{
 // commentaire
 INTEGER B=63.3;
 CONST M=8;
+INTEGER i=0;
 }
 BEGIN
-
-
-/* commentaire */
-IF(Aa>L) {  
-      
-        WHILE(i<n) { 
-            i=i+2;
-        WRITELN('la valeur de i :' i );
-                     }
-      } ELSE{ 
-               FOR(j : 1:5 :Idf_1) {
-                    j=j+3;
-                    }
-      }
-
-/* saisie de 
-plusieurs valeurs */
-
-WHILE (i <n) { i=i+2;
-    WRITELN('Entrez un nombre :');
-   READLN(Nombre);
-    WRITELN('Le nombre est :'nombre);
-
-    FOR (i : 0: 2 :n) {
-    i=i+2;
-    }
-}
-
+B=B/i;
 END
