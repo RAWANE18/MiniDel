@@ -1535,14 +1535,14 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
 
 /* Line 1455 of yacc.c  */
 #line 56 "synt.y"
-    {if(declarer((yyvsp[(1) - (5)].str))!=1){int idx; idx=rechercher((yyvsp[(1) - (5)].str), "Identificateur", "", "", 0);inserertype((yyvsp[(1) - (5)].str),"CONSTANTE");insererVal((yyvsp[(1) - (5)].str),tempval);}else{yyerror("declared");YYABORT; };}
+    {if(declarer((yyvsp[(1) - (5)].str))!=1){int idx; idx=rechercher((yyvsp[(1) - (5)].str), "Identificateur", "CONSTANTE", tempval, 0);}else{yyerror("declared");YYABORT; };}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
 #line 57 "synt.y"
-    {if(declarer((yyvsp[(1) - (3)].str))!=1){int idx; idx=rechercher((yyvsp[(1) - (3)].str), "Identificateur", "", "", 0);inserertype((yyvsp[(1) - (3)].str),"CONSTANTE");insererVal((yyvsp[(1) - (3)].str),tempval);}else{yyerror("declared");YYABORT; };}
+    {if(declarer((yyvsp[(1) - (3)].str))!=1){int idx; idx=rechercher((yyvsp[(1) - (3)].str), "Identificateur", "CONSTANTE", tempval, 0);}else{yyerror("declared");YYABORT; };}
     break;
 
   case 16:

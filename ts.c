@@ -132,14 +132,7 @@ void insererVal(char entite[],char val[]){
 	pos = rechercher(entite, "","","",0);
     if(pos!=-1) {strcpy(tab[pos].val, val);}
 }
-void inserertype(char entite[], char type[]){
 
-	
-	int pos;
-	pos = rechercher(entite, "","","",0);
-    if(pos!=-1) {strcpy(tab[pos].type, type);}	
-	
-}
 int declarer(char entite[]){
 	 for (int i = 0; i < 1000 && tab[i].state==1; i++)
         {

@@ -53,16 +53,16 @@ ARRAY : IDF OB INT FB {if(declarer($1)!=1){ yyerror("declared");YYABORT;}}
 listeT : ARRAY VIR listeT 
        | ARRAY 
 ;
-listeC :  IDF op_AFF val VIR listeC {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "", "", 0);inserertype($1,"CONSTANTE");insererVal($1,tempval);}else{yyerror("declared");YYABORT; }}
-       |  IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "", "", 0);inserertype($1,"CONSTANTE");insererVal($1,tempval);}else{yyerror("declared");YYABORT; }}
+listeC :  IDF op_AFF val VIR listeC {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "CONSTANTE", tempval, 0);}else{yyerror("declared");YYABORT; }}
+       |  IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "CONSTANTE", tempval, 0);}else{yyerror("declared");YYABORT; }}
 ;
 val:INT {strcpy(tempval,$1);}
    |REEL {strcpy(tempval,$1);}
 ;
 listeV : IDF VIR listeV {if(declarer($1)!=1){ yyerror("declared");YYABORT;}}
-       | IDF op_AFF val VIR listeV {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "", "", 0);inserertype($1,svtype);insererVal($1,tempval);}else{yyerror("declared");YYABORT; }}
+       | IDF op_AFF val VIR listeV {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", svtype, tempval, 0);}else{yyerror("declared");YYABORT; }}
        | IDF {if(declarer($1)!=1){ yyerror("declared");YYABORT;}}
-       | IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "", "", 0);inserertype($1,svtype);insererVal($1,tempval);}else{yyerror("declared");YYABORT; }}
+       | IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur",svtype, tempval, 0);}else{yyerror("declared");YYABORT; }}
 ;
 /*----------------------- Structure du corps de programme ----------------------------*/
 corps : corps instruction 
@@ -84,15 +84,15 @@ instWHILE : mc_WHILE PO cond PF ALO corps ALF
 ;
 instFOR : mc_FOR PO IDF DPOINT INT DPOINT INT DPOINT IDF PF ALO corps ALF {if(declarer($3)!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}else if(declarer($9)!=1){printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$9, nb_ligne,Col);YYABORT;}}
 ;
-instREADLN : mc_READLN PO IDF PF {if(declarer($3)!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$3, nb_ligne,Col);YYABORT;}}
+instREADLN : mc_READLN PO IDF PF {if(declarer($3)!=1){ printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$3, nb_ligne,Col);YYABORT;}}
 ;
 
 instWRITELN : mc_WRITELN PO string PF 
 ;
 string : string STR 
        | string IDF {if(declarer($2)!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$2, nb_ligne,Col);YYABORT;}}
-	   |STR
-	   |IDF {if(declarer($1)!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}}
+	|STR
+	|IDF {if(declarer($1)!=1){  printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}}
  ;
 expression : expression op_ADD expression
            | expression op_SUB expression 
