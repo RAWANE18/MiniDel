@@ -877,12 +877,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 58 "lexical.l"
+#line 59 "lexical.l"
 {Col += strlen(yytext); return STR; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 59 "lexical.l"
+#line 60 "lexical.l"
 {
 
 			  if (yyleng>=7){ printf ("warning: %s trop long a la ligne %d a la colonne %d \n ",yytext,nb_ligne, Col);
@@ -898,7 +898,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 73 "lexical.l"
+#line 74 "lexical.l"
 {
  Col= Col + strlen(yytext);
    if (yytext[0] == '-' && yytext[1] != '(') {
@@ -918,7 +918,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 90 "lexical.l"
+#line 91 "lexical.l"
 {
  if ((yytext[0] == '-'||yytext[0] == '+') && yytext[1] != '('){
         printf("Erreur lexicale : Ligne %d, Colonne %d, Reel signe sans parentheses : '%s'\n", nb_ligne, Col, yytext);
@@ -932,27 +932,27 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 102 "lexical.l"
+#line 103 "lexical.l"
 { Col += yyleng; } 
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 103 "lexical.l"
+#line 104 "lexical.l"
 { nb_ligne++; Col = 1; } 
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 104 "lexical.l"
+#line 105 "lexical.l"
 
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 105 "lexical.l"
+#line 106 "lexical.l"
 
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 108 "lexical.l"
+#line 109 "lexical.l"
 {
     printf("Erreur lexicale : Ligne %d, Colonne %d, Caractere non reconnu : %s\n", nb_ligne, Col, yytext);
     Col += strlen(yytext);
@@ -961,7 +961,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 114 "lexical.l"
+#line 115 "lexical.l"
 ECHO;
 	YY_BREAK
 #line 968 "lex.yy.c"
@@ -1850,5 +1850,5 @@ int main()
 	return 0;
 	}
 #endif
-#line 114 "lexical.l"
+#line 115 "lexical.l"
 

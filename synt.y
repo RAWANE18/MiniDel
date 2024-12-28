@@ -1,6 +1,7 @@
 %{
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "ts.h"
 void yyerror(const char *s);
 extern char *yytext;
@@ -11,6 +12,7 @@ char tempval[20];
 char svtype[20];
 char svcst[20];
 char svop[20];
+char svtaille[20];
 %}
 %union {
     char *str; 
@@ -50,7 +52,9 @@ declarationV : type listeV PVIR declarationV
 type : mc_INTEGER {strcpy(svtype,$1);}
      | mc_FLOAT {strcpy(svtype,$1);}
 ;
-ARRAY : IDF OB INT FB {if(declarer($1)!=1){ int idx; idx=rechercher($1, "Identificateur", "Tableau","", 0);}else{yyerror("declared");YYABORT; }}
+ARRAY : IDF OB taille FB {if(declarer($1)!=1){ int idx; idx=rechercher($1, "Identificateur", "Tableau","", 0);}else{yyerror("declared");YYABORT; }}
+;
+taille:INT {strcpy(svtaille,$1);}
 ;
 listeT : ARRAY VIR listeT 
        | ARRAY 
@@ -77,7 +81,7 @@ instruction : instAFF PVIR
             | instREADLN PVIR
             | instWRITELN PVIR
 ;
-instAFF :IDF OB INT FB op_AFF expression
+instAFF :IDF OB INT FB op_AFF expression {if(strtol($3, NULL, 10) > strtol(svtaille, NULL, 10)){printf("erreur Semantique: depassement de taille:%s a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}}
         |IDF op_AFF expression {if(declarer($1)!=1){ 
         printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
         YYABORT;}
@@ -121,7 +125,7 @@ expression : expression op_ADD expression  {strcpy(svop,$2);}
            | expression op_MUL expression {strcpy(svop,$2);}
            | expression op_DIV expression {strcpy(svop,$2);}
            | PO expression PF
-           | IDF OB INT FB
+           | IDF OB INT FB {if(strtol($3, NULL, 10) > strtol(svtaille, NULL, 10)){printf("erreur Semantique: depassement de taille a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;}}
            | INT {strcpy(svcst,$1);}
            | REEL{strcpy(svcst,$1);}
            | IDF {if(declarer($1)!=1){  

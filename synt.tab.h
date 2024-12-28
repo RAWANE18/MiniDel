@@ -90,7 +90,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 15 "synt.y"
+#line 17 "synt.y"
 
     char *str; 
 

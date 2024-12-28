@@ -55,6 +55,7 @@ ESPACE      [ \t]+
 ","            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return VIR; }
 ";"            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PVIR; }
 ":"            {idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return DPOINT; }
+
 {STR}          {Col += strlen(yytext); return STR; }
 {IDF} {
 
