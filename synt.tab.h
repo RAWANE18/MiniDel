@@ -75,12 +75,11 @@
      VIR = 291,
      PVIR = 292,
      DPOINT = 293,
-     AP = 294,
-     IDF = 295,
-     ERR = 296,
-     STR = 297,
-     REEL = 298,
-     INT = 299
+     IDF = 294,
+     ERR = 295,
+     STR = 296,
+     REEL = 297,
+     INT = 298
    };
 #endif
 
@@ -98,7 +97,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 102 "synt.tab.h"
+#line 101 "synt.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

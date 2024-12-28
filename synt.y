@@ -17,7 +17,7 @@ char svop[20];
 } 
 /*----------------------- Définition des mots clé et opérends----------------------------*/
 %token mc_PROGRAM mc_VAR mc_begin mc_END <str>mc_CONST <str>mc_INTEGER <str>mc_FLOAT mc_IF mc_ELSE mc_FOR mc_WHILE mc_READLN mc_WRITELN
-%token <str>op_ADD <str>op_SUB <str>op_MUL <str>op_DIV op_AND op_OR op_NOT op_EQ op_NEG op_INF op_INF_E op_SUP op_SUP_E op_AFF PO PF OB FB ALO ALF VIR PVIR DPOINT AP
+%token <str>op_ADD <str>op_SUB <str>op_MUL <str>op_DIV op_AND op_OR op_NOT op_EQ op_NEG op_INF op_INF_E op_SUP op_SUP_E op_AFF PO PF OB FB ALO ALF VIR PVIR DPOINT 
 %token <str>IDF ERR STR <str>REEL <str>INT 
 
 /*----------------------- Les Priorités ----------------------------*/
@@ -50,7 +50,7 @@ declarationV : type listeV PVIR declarationV
 type : mc_INTEGER {strcpy(svtype,$1);}
      | mc_FLOAT {strcpy(svtype,$1);}
 ;
-ARRAY : IDF OB INT FB {if(declarer($1)!=1){ yyerror("declared");YYABORT;}}
+ARRAY : IDF OB INT FB {if(declarer($1)!=1){ int idx; idx=rechercher($1, "Identificateur", "Tableau","", 0);}else{yyerror("declared");YYABORT; }}
 ;
 listeT : ARRAY VIR listeT 
        | ARRAY 
@@ -77,7 +77,8 @@ instruction : instAFF PVIR
             | instREADLN PVIR
             | instWRITELN PVIR
 ;
-instAFF : IDF op_AFF expression {if(declarer($1)!=1){ 
+instAFF :IDF OB INT FB op_AFF expression
+        |IDF op_AFF expression {if(declarer($1)!=1){ 
         printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
         YYABORT;}
         if(div_zero(svcst,svop)!=0){
@@ -120,6 +121,7 @@ expression : expression op_ADD expression  {strcpy(svop,$2);}
            | expression op_MUL expression {strcpy(svop,$2);}
            | expression op_DIV expression {strcpy(svop,$2);}
            | PO expression PF
+           | IDF OB INT FB
            | INT {strcpy(svcst,$1);}
            | REEL{strcpy(svcst,$1);}
            | IDF {if(declarer($1)!=1){  

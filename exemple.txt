@@ -3,8 +3,11 @@ VAR{
 // commentaire
 INTEGER B=63.3;
 CONST M=8;
-INTEGER i=0;
+INTEGER i=4;
+INTEGER tab[20];
 }
 BEGIN
+tab [2]=tab [3]+5;
 B=B/i;
+
 END
