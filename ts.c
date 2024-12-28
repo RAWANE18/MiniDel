@@ -162,6 +162,13 @@ int div_zero(char entite[], char operand[])
     }
     return 0;
 }
+int verefier_cst(char entite[]){
+int pos;
+ pos = rechercher(entite, "Identificateur", "CONSTANTE", "", 0);
+ if (pos != -1){
+    return 1;
+ }
+}
 void afficher()
 {
     int i;

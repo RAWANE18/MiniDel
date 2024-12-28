@@ -503,10 +503,10 @@ static const yytype_uint8 yyrline[] =
        0,    39,    39,    45,    46,    47,    48,    49,    50,    52,
       53,    55,    57,    59,    60,    62,    63,    65,    66,    68,
       69,    70,    71,    74,    75,    77,    78,    79,    80,    81,
-      82,    84,    85,    94,    95,    97,    99,   106,   111,   113,
-     114,   117,   118,   123,   124,   125,   126,   127,   128,   129,
-     130,   131,   136,   137,   138,   139,   140,   141,   142,   143,
-     144
+      82,    84,    85,    97,    98,   100,   102,   109,   114,   116,
+     117,   120,   121,   126,   127,   128,   129,   130,   131,   132,
+     133,   134,   139,   140,   141,   142,   143,   144,   145,   146,
+     147
 };
 #endif
 
@@ -1625,13 +1625,16 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
 printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);
         YYABORT;
         }
+        if(verefier_cst((yyvsp[(1) - (3)].str))==1){
+printf("erreur Semantique: changement de valeur de constante a la ligne %d a la colonne %d\n", nb_ligne,Col);
+        YYABORT;}
         ;}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 99 "synt.y"
+#line 102 "synt.y"
     {if(declarer((yyvsp[(3) - (13)].str))!=1){  
        printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(1) - (13)].str), nb_ligne,Col);
        YYABORT;}
@@ -1643,7 +1646,7 @@ printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 106 "synt.y"
+#line 109 "synt.y"
     {if(declarer((yyvsp[(3) - (4)].str))!=1){
         printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(3) - (4)].str), nb_ligne,Col);
         YYABORT;};}
@@ -1652,7 +1655,7 @@ printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 114 "synt.y"
+#line 117 "synt.y"
     {if(declarer((yyvsp[(2) - (2)].str))!=1){ 
                printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(2) - (2)].str), nb_ligne,Col);
                YYABORT;};}
@@ -1661,7 +1664,7 @@ printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 118 "synt.y"
+#line 121 "synt.y"
     {if(declarer((yyvsp[(1) - (1)].str))!=1){ 
                printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(1) - (1)].str), nb_ligne,Col);
                YYABORT;};}
@@ -1670,56 +1673,56 @@ printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 123 "synt.y"
+#line 126 "synt.y"
     {strcpy(svop,(yyvsp[(2) - (3)].str));;}
     break;
 
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 124 "synt.y"
+#line 127 "synt.y"
     {strcpy(svop,(yyvsp[(2) - (3)].str));;}
     break;
 
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 125 "synt.y"
+#line 128 "synt.y"
     {strcpy(svop,(yyvsp[(2) - (3)].str));;}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 126 "synt.y"
+#line 129 "synt.y"
     {strcpy(svop,(yyvsp[(2) - (3)].str));;}
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 128 "synt.y"
+#line 131 "synt.y"
     {if(strtol((yyvsp[(3) - (4)].str), NULL, 10) > strtol(svtaille, NULL, 10)){printf("erreur Semantique: depassement de taille a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;};}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 129 "synt.y"
+#line 132 "synt.y"
     {strcpy(svcst,(yyvsp[(1) - (1)].str));;}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 130 "synt.y"
+#line 133 "synt.y"
     {strcpy(svcst,(yyvsp[(1) - (1)].str));;}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 131 "synt.y"
+#line 134 "synt.y"
     {if(declarer((yyvsp[(1) - (1)].str))!=1){  
               printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(1) - (1)].str), nb_ligne,Col);
               YYABORT;}
@@ -1729,7 +1732,7 @@ printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb
 
 
 /* Line 1455 of yacc.c  */
-#line 1733 "synt.tab.c"
+#line 1736 "synt.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1941,7 +1944,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 146 "synt.y"
+#line 149 "synt.y"
 
 int main()
 {yyparse();

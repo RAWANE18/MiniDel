@@ -27,6 +27,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y);
 int declarer(char entite[]);
 int insererVal(char entite[], char val[]);
 int div_zero(char entite[],char operand[]);
+int verefier_cst(char entite[]);
 void afficher();
 
 #endif

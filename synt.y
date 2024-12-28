@@ -89,6 +89,9 @@ instAFF :IDF OB INT FB op_AFF expression {if(strtol($3, NULL, 10) > strtol(svtai
 printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);
         YYABORT;
         }
+        if(verefier_cst($1)==1){
+printf("erreur Semantique: changement de valeur de constante a la ligne %d a la colonne %d\n", nb_ligne,Col);
+        YYABORT;}
         }
 ;
 instIF : mc_IF PO cond PF ALO corps ALF 

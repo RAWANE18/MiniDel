@@ -7,7 +7,6 @@ INTEGER i=4;
 INTEGER tab[20];
 }
 BEGIN
-tab[25]=tab[3]+5;
 B=B/i;
-
+M=5;
 END
