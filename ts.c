@@ -163,11 +163,13 @@ int div_zero(char entite[], char operand[])
     return 0;
 }
 int verefier_cst(char entite[]){
-int pos;
- pos = rechercher(entite, "Identificateur", "CONSTANTE", "", 0);
- if (pos != -1){
-    return 1;
- }
+for (int i = 0; i < 1000 && tab[i].state == 1; i++)
+    {
+        if (strcmp(tab[i].code, "Identificateur") == 0 && strcmp(entite, tab[i].name) == 0&&strcmp(tab[i].type, "CONSTANTE") == 0)
+        {
+            return 1;
+        }
+    }
 }
 void afficher()
 {
