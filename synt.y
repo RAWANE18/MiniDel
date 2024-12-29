@@ -65,13 +65,13 @@ listeC :  IDF op_AFF val VIR listeC {if(declarer($1)!=1){int idx; idx=rechercher
 val:INT {strcpy(tempval,$1);}
    |REEL {strcpy(tempval,$1);}
 ;
-listeV : IDF VIR listeV {if(declarer($1)!=1){ yyerror("declared");YYABORT;}}
+listeV : IDF VIR listeV {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur",svtype, tempval, 0);}else{yyerror("declared");YYABORT; }}
        | IDF op_AFF val VIR listeV {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", svtype, tempval, 0);}else{yyerror("declared");YYABORT; }}
-       | IDF {if(declarer($1)!=1){ yyerror("declared");YYABORT;}}
+       | IDF {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", svtype, tempval, 0);}else{ yyerror("declared");YYABORT;}}
        | IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur",svtype, tempval, 0);}else{yyerror("declared");YYABORT; }}
 ;
 /*----------------------- Structure du corps de programme ----------------------------*/
-corps : corps instruction 
+corps : instruction corps 
       | instruction 
 ;
 instruction : instAFF PVIR
@@ -113,9 +113,9 @@ instREADLN : mc_READLN PO IDF PF {if(declarer($3)!=1){
 
 instWRITELN : mc_WRITELN PO string PF 
 ;
-string : string STR 
-       | string IDF {if(declarer($2)!=1){ 
-               printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$2, nb_ligne,Col);
+string : STR string
+       | IDF string{if(declarer($1)!=1){ 
+               printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
                YYABORT;}}
 	|STR
 	|IDF {if(declarer($1)!=1){ 
@@ -123,10 +123,7 @@ string : string STR
                YYABORT;}}
  ;
 
-expression : expression op_ADD expression  {strcpy(svop,$2);}
-           | expression op_SUB expression  {strcpy(svop,$2);}
-           | expression op_MUL expression {strcpy(svop,$2);}
-           | expression op_DIV expression {strcpy(svop,$2);}
+expression :Temp
            | PO expression PF
            | IDF OB INT FB {if(strtol($3, NULL, 10) > strtol(svtaille, NULL, 10)){printf("erreur Semantique: depassement de taille a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;}}
            | INT {strcpy(svcst,$1);}
@@ -135,6 +132,11 @@ expression : expression op_ADD expression  {strcpy(svop,$2);}
               printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
               YYABORT;}
               strcpy(svcst,$1);}
+;
+Temp : expression op_ADD expression  {strcpy(svop,$2);}
+     | expression op_SUB expression  {strcpy(svop,$2);}
+     | expression op_MUL expression {strcpy(svop,$2);}
+     | expression op_DIV expression {strcpy(svop,$2);}
 ;
 cond : expression op_EQ expression 
      | expression op_NEG expression 

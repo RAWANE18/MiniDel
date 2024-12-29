@@ -1583,7 +1583,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
 
 /* Line 1455 of yacc.c  */
 #line 68 "synt.y"
-    {if(declarer((yyvsp[(1) - (3)].str))!=1){ yyerror("declared");YYABORT;};}
+    {if(declarer((yyvsp[(1) - (3)].str))!=1){int idx; idx=rechercher((yyvsp[(1) - (3)].str), "Identificateur",svtype, tempval, 0);}else{yyerror("declared");YYABORT; };}
     break;
 
   case 20:
@@ -1597,7 +1597,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
 
 /* Line 1455 of yacc.c  */
 #line 70 "synt.y"
-    {if(declarer((yyvsp[(1) - (1)].str))!=1){ yyerror("declared");YYABORT;};}
+    {if(declarer((yyvsp[(1) - (1)].str))!=1){int idx; idx=rechercher((yyvsp[(1) - (1)].str), "Identificateur", svtype, tempval, 0);}else{ yyerror("declared");YYABORT;};}
     break;
 
   case 22:
