@@ -11,6 +11,7 @@ int Col=1;
 char tempval[20];
 char svtype[20];
 char svcst[20];
+char svcst2[20];
 char svop[20];
 char svtaille[20];
 %}
@@ -65,9 +66,9 @@ listeC :  IDF op_AFF val VIR listeC {if(declarer($1)!=1){int idx; idx=rechercher
 val:INT {strcpy(tempval,$1);}
    |REEL {strcpy(tempval,$1);}
 ;
-listeV : IDF VIR listeV {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur",svtype, tempval, 0);}else{yyerror("declared");YYABORT; }}
-       | IDF op_AFF val VIR listeV {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", svtype, tempval, 0);}else{yyerror("declared");YYABORT; }}
-       | IDF {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", svtype, tempval, 0);}else{ yyerror("declared");YYABORT;}}
+listeV : IDF VIR listeV {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur",svtype, "", 0);}else{yyerror("declared");YYABORT; }}
+       /*| IDF op_AFF val VIR listeV {if(declarer($1)!=1){int pos; pos=rechercher($1, "Identificateur",svtype, "", 0);insererVal($1,tempval);}else{yyerror("declared");YYABORT; }}*/
+       | IDF {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", svtype, "", 0);}else{ yyerror("declared");YYABORT;}}
        | IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur",svtype, tempval, 0);}else{yyerror("declared");YYABORT; }}
 ;
 /*----------------------- Structure du corps de programme ----------------------------*/
@@ -85,14 +86,23 @@ instAFF :IDF OB INT FB op_AFF expression {if(strtol($3, NULL, 10) > strtol(svtai
         |IDF op_AFF expression {if(declarer($1)!=1){ 
         printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
         YYABORT;}
-        if(div_zero(svcst,svop)!=0){
-printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);
-        YYABORT;
-        }
         if(verefier_cst($1)==1){
 printf("erreur Semantique: changement de valeur de constante a la ligne %d a la colonne %d\n", nb_ligne,Col);
         YYABORT;}
+         
+         if (affect_value(svcst2,svcst,svop,$1)==-1) {
+              printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);
+        YYABORT;
+          } 
+         if (affect_value(svcst2,svcst,svop,$1)==1) {
+              printf("Warning: Affectation d une valeur de type <FLOAT> a une variable de type <INTEGER> a la ligne %d a la colonne %d\n", nb_ligne,Col);
+        YYABORT;
+          } 
+          if (affect_value(svcst2,svcst,svop,$1)==2) {
+                YYABORT;
+          } 
         }
+       
 ;
 instIF : mc_IF PO cond PF ALO corps ALF 
        | mc_IF PO cond PF ALO corps ALF mc_ELSE ALO corps ALF
@@ -123,8 +133,9 @@ string : STR string
                YYABORT;}}
  ;
 
-expression :Temp
-           | PO expression PF
+expression : IDF operation expression {strcpy(svcst2,$1);}
+           | INT operation expression  {strcpy(svcst2,$1);}
+           | REEL operation expression {strcpy(svcst2,$1);}
            | IDF OB INT FB {if(strtol($3, NULL, 10) > strtol(svtaille, NULL, 10)){printf("erreur Semantique: depassement de taille a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;}}
            | INT {strcpy(svcst,$1);}
            | REEL{strcpy(svcst,$1);}
@@ -133,10 +144,10 @@ expression :Temp
               YYABORT;}
               strcpy(svcst,$1);}
 ;
-Temp : expression op_ADD expression  {strcpy(svop,$2);}
-     | expression op_SUB expression  {strcpy(svop,$2);}
-     | expression op_MUL expression {strcpy(svop,$2);}
-     | expression op_DIV expression {strcpy(svop,$2);}
+operation : op_ADD {strcpy(svop,$1);}
+          | op_SUB {strcpy(svop,$1);}
+          | op_DIV {strcpy(svop,$1);}
+          | op_MUL {strcpy(svop,$1);}
 ;
 cond : expression op_EQ expression 
      | expression op_NEG expression 

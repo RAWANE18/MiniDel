@@ -1,12 +1,13 @@
 PROGRAM Acad
 VAR{
 // commentaire
-INTEGER L, N_1, m, n,i,j, Nombre ;
-INTEGER B=63.3;
+INTEGER L=2;
+INTEGER B=0;
+FLOAT S=2;
 CONST M=8;
-INTEGER i=4;
+INTEGER i=8;
 INTEGER tab[20];
 }
 BEGIN
-B=B/i;
+B=S+S;
 END

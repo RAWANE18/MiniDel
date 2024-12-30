@@ -19,14 +19,14 @@ typedef struct
 
 } elt;
 
-element tab[1000];
+element tab[200];
 elt tabS[50], tabM[50];
 int cpt, cpts, cptm;
 
 void init()
 {
     int i;
-    for (i = 0; i < 1000; i++)
+    for (i = 0; i < 200; i++)
         tab[i].state = 0;
 
     for (i = 0; i < 50; i++)
@@ -76,7 +76,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
     switch (y)
     {
     case 0: // Table des IDF et CONST
-        for (i = 0; i < 1000 && tab[i].state == 1; i++)
+        for (i = 0; i < 200 && tab[i].state == 1; i++)
         {
             if (strcmp(entite, tab[i].name) == 0)
             {
@@ -84,7 +84,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
                 return i;
             }
         }
-        if (i < 1000)
+        if (i < 200)
         {
             inserer(entite, code, type, val, i, 0);
         }
@@ -131,11 +131,13 @@ void insererVal(char entite[], char val[])
     {
         strcpy(tab[pos].val, val);
     }
+    
+  
 }
 
 int declarer(char entite[])
 {
-    for (int i = 0; i < 1000 && tab[i].state == 1; i++)
+    for (int i = 0; i < 200 && tab[i].state == 1; i++)
     {
         if (strcmp(tab[i].code, "Identificateur") == 0 && strcmp(entite, tab[i].name) == 0)
         {
@@ -163,7 +165,7 @@ int div_zero(char entite[], char operand[])
     return 0;
 }
 int verefier_cst(char entite[]){
-for (int i = 0; i < 1000 && tab[i].state == 1; i++)
+for (int i = 0; i < 200 && tab[i].state == 1; i++)
     {
         if (strcmp(tab[i].code, "Identificateur") == 0 && strcmp(entite, tab[i].name) == 0&&strcmp(tab[i].type, "CONSTANTE") == 0)
         {
@@ -171,6 +173,75 @@ for (int i = 0; i < 1000 && tab[i].state == 1; i++)
         }
     }
 }
+int affect_value(char operand1[], char operand2[], char operator[], char result[]) {
+char val[20]; 
+float res;    
+char type1[20];
+char type2[20];
+char type3[20]; 
+int pos;
+    for (int i = 0; i < 200 && tab[i].state == 1; i++) {
+        if (strcmp(tab[i].code, "Identificateur") == 0) {
+             if (strcmp(result, tab[i].name) == 0) {
+                strcpy(type3, tab[i].type);
+                pos=i;
+            }
+            if (strcmp(operand1, tab[i].name) == 0) {
+                strcpy(operand1, tab[i].val);
+                strcpy(type1, tab[i].type);
+                
+            }
+            if (strcmp(operand2, tab[i].name) == 0) {
+                strcpy(operand2, tab[i].val);
+                strcpy(type2, tab[i].type);
+               
+            }
+        }
+    }
+
+    float op1 = strtof(operand1, NULL);
+    float op2 = strtof(operand2, NULL);
+
+    if (strcmp(operator, "+") == 0) {
+        
+        res = op1 + op2;
+         snprintf(val, sizeof(val), "%.0f", res); 
+    } else if (strcmp(operator, "-") == 0) {
+        res = op1 - op2;
+         snprintf(val, sizeof(val), "%.0f", res); 
+    } else if (strcmp(operator, "*") == 0) {
+        res = op1 * op2;
+         snprintf(val, sizeof(val), "%.0f", res); 
+    } else if (strcmp(operator, "/") == 0) {
+       
+        if (op2 == 0) {
+            return -1;
+        }
+        res = op1/op2;
+         if((strcmp(type3, "INTEGER")==0)){
+ snprintf(val, sizeof(val), "%.0f", res); 
+        }else{ snprintf(val, sizeof(val), "%.2f", res); }
+        
+    } else {
+        printf("Error: Unknown operator '%s'\n", operator);
+        return 2;
+    }
+
+    
+      strcpy(tab[pos].val,val);
+ 
+
+     
+ if((strcmp(type3, "INTEGER")==0)&&(strcmp(type1, "FLOAT")==0||strcmp(type2, "FLOAT")==0)){
+            return 1;
+        }
+     
+       
+    
+    return 0;
+}
+
+
 void afficher()
 {
     int i;
