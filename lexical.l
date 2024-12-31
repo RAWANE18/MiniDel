@@ -2,6 +2,7 @@
 #include <string.h>
 #include "synt.tab.h"
 #include "ts.h"
+#include "quad.h"
 extern YYSTYPE yylval;
 extern int nb_ligne;
 extern int Col;

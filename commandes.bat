@@ -1,3 +1,3 @@
 flex lexical.l
 bison -d synt.y
-gcc lex.yy.c synt.tab.c ts.c -lfl -ly -o projetc
+gcc lex.yy.c synt.tab.c ts.c  quad.c -lfl -ly -o projet

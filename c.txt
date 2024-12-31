@@ -1,0 +1,15 @@
+PROGRAM Acad
+VAR{
+// commentaire
+INTEGER A,D,x,a,b,c,y,result;
+INTEGER L;
+INTEGER B;
+FLOAT S;
+INTEGER i;
+}
+BEGIN
+A=8;
+x = a + b * c;
+x[2] = y / 3;
+result = 4.5 * x - 2;
+END

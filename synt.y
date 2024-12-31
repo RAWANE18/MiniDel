@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ts.h"
+#include "quad.h"
 void yyerror(const char *s);
 extern char *yytext;
 int yylex();
@@ -14,6 +15,9 @@ char svcst[20];
 char svcst2[20];
 char svop[20];
 char svtaille[20];
+int Fin_if=0,deb_else=0;
+char tmp [20]; 
+
 %}
 %union {
     char *str; 
@@ -22,6 +26,8 @@ char svtaille[20];
 %token mc_PROGRAM mc_VAR mc_begin mc_END <str>mc_CONST <str>mc_INTEGER <str>mc_FLOAT mc_IF mc_ELSE mc_FOR mc_WHILE mc_READLN mc_WRITELN
 %token <str>op_ADD <str>op_SUB <str>op_MUL <str>op_DIV op_AND op_OR op_NOT op_EQ op_NEG op_INF op_INF_E op_SUP op_SUP_E op_AFF PO PF OB FB ALO ALF VIR PVIR DPOINT 
 %token <str>IDF ERR STR <str>REEL <str>INT 
+%type <str> expression term
+%type <str> operation
 
 /*----------------------- Les Priorités ----------------------------*/
 %nonassoc op_NOT
@@ -82,28 +88,7 @@ instruction : instAFF PVIR
             | instREADLN PVIR
             | instWRITELN PVIR
 ;
-instAFF :IDF OB INT FB op_AFF expression {if(strtol($3, NULL, 10) > strtol(svtaille, NULL, 10)){printf("erreur Semantique: depassement de taille:%s a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}}
-        |IDF op_AFF expression {if(declarer($1)!=1){ 
-        printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
-        YYABORT;}
-        if(verefier_cst($1)==1){
-printf("erreur Semantique: changement de valeur de constante a la ligne %d a la colonne %d\n", nb_ligne,Col);
-        YYABORT;}
-         
-         if (affect_value(svcst2,svcst,svop,$1)==-1) {
-              printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);
-        YYABORT;
-          } 
-         if (affect_value(svcst2,svcst,svop,$1)==1) {
-              printf("Warning: Affectation d une valeur de type <FLOAT> a une variable de type <INTEGER> a la ligne %d a la colonne %d\n", nb_ligne,Col);
-        YYABORT;
-          } 
-          if (affect_value(svcst2,svcst,svop,$1)==2) {
-                YYABORT;
-          } 
-        }
-       
-;
+
 instIF : mc_IF PO cond PF ALO corps ALF 
        | mc_IF PO cond PF ALO corps ALF mc_ELSE ALO corps ALF
 ;
@@ -133,22 +118,34 @@ string : STR string
                YYABORT;}}
  ;
 
-expression : IDF operation expression {strcpy(svcst2,$1);}
-           | INT operation expression  {strcpy(svcst2,$1);}
-           | REEL operation expression {strcpy(svcst2,$1);}
-           | IDF OB INT FB {if(strtol($3, NULL, 10) > strtol(svtaille, NULL, 10)){printf("erreur Semantique: depassement de taille a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;}}
-           | INT {strcpy(svcst,$1);}
-           | REEL{strcpy(svcst,$1);}
-           | IDF {if(declarer($1)!=1){  
-              printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
-              YYABORT;}
-              strcpy(svcst,$1);}
+
+instAFF : IDF op_AFF expression  {
+          quadr("=", $3, "", $1);
+      }
+          | IDF OB INT FB op_AFF expression
+          ;
+
+expression
+    : term          { $$ = $1; }
+    | expression operation term {
+          char* temp = newTempVar();
+          quadr($2, $1, $3, temp);
+          $$ = temp;
+        }
 ;
-operation : op_ADD {strcpy(svop,$1);}
-          | op_SUB {strcpy(svop,$1);}
-          | op_DIV {strcpy(svop,$1);}
-          | op_MUL {strcpy(svop,$1);}
+
+term: IDF                      { $$ = $1; }/* Exemple, ajustez selon votre logique */ 
+    | INT                      { $$ = $1; }
+    | REEL                     { $$ = $1; }
+    | IDF OB INT FB            
 ;
+
+operation : op_SUB { $$ = "-"; }
+    | op_ADD { $$ = "+"; }
+    | op_DIV { $$ = "/"; } 
+    |op_MUL { $$ = "*"; }                
+;
+
 cond : expression op_EQ expression 
      | expression op_NEG expression 
      | expression op_INF expression 
@@ -159,11 +156,12 @@ cond : expression op_EQ expression
      | PO expression PF op_OR PO expression PF
      | PO op_NOT expression PF
 ;
+
 %%
 int main()
 {yyparse();
 afficher();
-
+afficher_qdr();
   return 0;
 }
 
