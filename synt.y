@@ -17,6 +17,8 @@ char svop[20];
 char svtaille[20];
 int Fin_if=0,deb_else=0;
 char tmp [20]; 
+int tete = -1; //pointeur vers la pile : cas imbriqué
+int deb_else_pile[100];
 
 %}
 %union {
@@ -36,8 +38,8 @@ char tmp [20];
 
 %left op_SUP op_SUP_E op_EQ op_NEG op_INF_E op_INF
 
-%left op_ADD op_SUB
 %left op_MUL op_DIV
+%left op_ADD op_SUB
 
 %start S
 %%
@@ -59,7 +61,7 @@ declarationV : type listeV PVIR declarationV
 type : mc_INTEGER {strcpy(svtype,$1);}
      | mc_FLOAT {strcpy(svtype,$1);}
 ;
-ARRAY : IDF OB taille FB {if(declarer($1)!=1){ int idx; idx=rechercher($1, "Identificateur", "Tableau","", 0);}else{yyerror("declared");YYABORT; }}
+ARRAY : IDF OB taille FB {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur","Tableau", "", 0);}else{yyerror("declared");YYABORT; }}
 ;
 taille:INT {strcpy(svtaille,$1);}
 ;
@@ -89,9 +91,6 @@ instruction : instAFF PVIR
             | instWRITELN PVIR
 ;
 
-instIF : mc_IF PO cond PF ALO corps ALF 
-       | mc_IF PO cond PF ALO corps ALF mc_ELSE ALO corps ALF
-;
 instWHILE : mc_WHILE PO cond PF ALO corps ALF 
 ;
 instFOR : mc_FOR PO IDF DPOINT INT DPOINT INT DPOINT IDF PF ALO corps ALF {if(declarer($3)!=1){  
@@ -119,30 +118,74 @@ string : STR string
  ;
 
 
+instIF :Belse mc_ELSE ALO corps ALF  {  sprintf(tmp,"%d",qc);  
+                              ajour_quad(Fin_if,1,tmp);}
+       |B
+;
+Belse : A ALO corps ALF   {  
+				   Fin_if=qc;
+                   quadr("BR", "","vide", "vide"); 
+				   sprintf(tmp,"%d",qc); 
+                   ajour_quad(deb_else,1,tmp);
+				   }
+;    
+
+B: A ALO corps ALF { 
+    sprintf(tmp, "%d", qc); 
+    ajour_quad(deb_else_pile[tete], 1, tmp); 
+    tete--; 
+}
+;
+
+A: mc_IF PO cond PF { 
+    deb_else_pile[++tete] = qc; 
+    quadr("BZ", "", "temp_cond", " ");
+}
+;
+
+
+
 instAFF : IDF op_AFF expression  {
-          quadr("=", $3, "", $1);
-      }
-          | IDF OB INT FB op_AFF expression
+           if(declarer($1)!=1){ printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}
+           if(div_zero(svcst,svop)!=0){printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;} 
+           if(verefier_cst($1)==1){printf("erreur Semantique: changement de valeur de constante a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;}
+           quadr("=", $3, "", $1);}
+          | IDF OB INT FB op_AFF expression {quadr("=", $6, "", $1); if(strtol($3, NULL, 10) > strtol(svtaille, NULL, 10)){printf("erreur Semantique: depassement de taille:%s a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}}
+
           ;
 
 expression
     : term          { $$ = $1; }
-    | expression operation term {
+    | term operation  expression 
+    {
           char* temp = newTempVar();
-          quadr($2, $1, $3, temp);
+          quadr($2, $1, $3, temp); 
           $$ = temp;
         }
+        | PO expression PF operation  expression 
+     {
+          char* temp = newTempVar();
+          quadr($4, $2, $5, temp);
+          $$ = temp;
+        }
+      
+     |term operation  PO expression PF 
+     {char* temp = newTempVar();
+          quadr($2, $4, $1, temp);
+          $$ = temp;}
+     
+
 ;
 
-term: IDF                      { $$ = $1; }/* Exemple, ajustez selon votre logique */ 
-    | INT                      { $$ = $1; }
-    | REEL                     { $$ = $1; }
-    | IDF OB INT FB            
+term: IDF                      { $$ = $1;   strcpy(svcst,$1);}/* Exemple, ajustez selon votre logique */ 
+    | INT                      { $$ = $1;   strcpy(svcst,$1);}
+    | REEL                     { $$ = $1;   strcpy(svcst,$1);}
+    | IDF OB INT FB             
 ;
 
 operation : op_SUB { $$ = "-"; }
     | op_ADD { $$ = "+"; }
-    | op_DIV { $$ = "/"; } 
+    | op_DIV { $$ = "/"; strcpy(svop,$1); } 
     |op_MUL { $$ = "*"; }                
 ;
 

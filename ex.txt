@@ -1,0 +1,31 @@
+PROGRAM Acad
+VAR {
+// commentaire
+INTEGER L, N_1, m, n,i,j, Nombre ;
+INTEGER T[9];
+INTEGER Aa;
+FLOAT Mi, hi, Ti, Si;
+CONST Idf_1 = 329 ;
+INTEGER Tab2[2] ;
+FLOAT Tab3[0] ;
+// commentaire
+}
+BEGIN
+
+IF(A < m) {  
+        Mi=L+2.6;
+      
+      }ELSE { IF(A < m) {  
+        Mi=L+2.6;
+      
+      }}
+
+IF(Aa>L) {  
+        Mi=L+2.6;
+      IF(Aa>L) {  
+        Mi=L+2.6;
+      
+      } 
+      } 
+  hi=8;
+END
