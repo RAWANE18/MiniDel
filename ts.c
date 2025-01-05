@@ -123,17 +123,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
         return -1;
     }
 }
-void insererVal(char entite[], char val[])
-{
-    int pos;
-    pos = rechercher(entite, "", "", "", 0);
-    if (pos != -1)
-    {
-        strcpy(tab[pos].val, val);
-    }
-    
-  
-}
+
 
 int declarer(char entite[])
 {
@@ -173,73 +163,7 @@ for (int i = 0; i < 200 && tab[i].state == 1; i++)
         }
     }
 }
-int affect_value(char operand1[], char operand2[], char operator[], char result[]) {
-char val[20]; 
-float res;    
-char type1[20];
-char type2[20];
-char type3[20]; 
-int pos;
-    for (int i = 0; i < 200 && tab[i].state == 1; i++) {
-        if (strcmp(tab[i].code, "Identificateur") == 0) {
-             if (strcmp(result, tab[i].name) == 0) {
-                strcpy(type3, tab[i].type);
-                pos=i;
-            }
-            if (strcmp(operand1, tab[i].name) == 0) {
-                strcpy(operand1, tab[i].val);
-                strcpy(type1, tab[i].type);
-                
-            }
-            if (strcmp(operand2, tab[i].name) == 0) {
-                strcpy(operand2, tab[i].val);
-                strcpy(type2, tab[i].type);
-               
-            }
-        }
-    }
 
-    float op1 = strtof(operand1, NULL);
-    float op2 = strtof(operand2, NULL);
-
-    if (strcmp(operator, "+") == 0) {
-        
-        res = op1 + op2;
-         snprintf(val, sizeof(val), "%.0f", res); 
-    } else if (strcmp(operator, "-") == 0) {
-        res = op1 - op2;
-         snprintf(val, sizeof(val), "%.0f", res); 
-    } else if (strcmp(operator, "*") == 0) {
-        res = op1 * op2;
-         snprintf(val, sizeof(val), "%.0f", res); 
-    } else if (strcmp(operator, "/") == 0) {
-       
-        if (op2 == 0) {
-            return -1;
-        }
-        res = op1/op2;
-         if((strcmp(type3, "INTEGER")==0)){
- snprintf(val, sizeof(val), "%.0f", res); 
-        }else{ snprintf(val, sizeof(val), "%.2f", res); }
-        
-    } else {
-        printf("Error: Unknown operator '%s'\n", operator);
-        return 2;
-    }
-
-    
-      strcpy(tab[pos].val,val);
- 
-
-     
- if((strcmp(type3, "INTEGER")==0)&&(strcmp(type1, "FLOAT")==0||strcmp(type2, "FLOAT")==0)){
-            return 1;
-        }
-     
-       
-    
-    return 0;
-}
 
 
 void afficher()

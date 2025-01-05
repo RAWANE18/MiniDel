@@ -17,6 +17,8 @@ char svop[20];
 char svtaille[20];
 int Fin_if=0,deb_else=0;
 char tmp [20]; 
+int tete = -1; //pointeur vers la pile : cas imbriqué
+int deb_else_pile[100];
 
 %}
 %union {
@@ -66,16 +68,19 @@ taille:INT {strcpy(svtaille,$1);}
 listeT : ARRAY VIR listeT 
        | ARRAY 
 ;
-listeC :  IDF op_AFF val VIR listeC {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "CONSTANTE", tempval, 0);}else{yyerror("declared");YYABORT; }}
-       |  IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "CONSTANTE", tempval, 0);}else{yyerror("declared");YYABORT; }}
+listeC :  AFFVALCST VIR listeC 
+       |  AFFVALCST 
+;
+AFFVALCST: IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "CONSTANTE", tempval, 0);}else{yyerror("declared");YYABORT; }}
 ;
 val:INT {strcpy(tempval,$1);}
    |REEL {strcpy(tempval,$1);}
 ;
 listeV : IDF VIR listeV {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur",svtype, "", 0);}else{yyerror("declared");YYABORT; }}
-       /*| IDF op_AFF val VIR listeV {if(declarer($1)!=1){int pos; pos=rechercher($1, "Identificateur",svtype, "", 0);insererVal($1,tempval);}else{yyerror("declared");YYABORT; }}*/
+       | AFFVAL VIR listeV 
        | IDF {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", svtype, "", 0);}else{ yyerror("declared");YYABORT;}}
-       | IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur",svtype, tempval, 0);}else{yyerror("declared");YYABORT; }}
+       | AFFVAL;
+AFFVAL : IDF op_AFF val {if(declarer($1)!=1){int pos; pos=rechercher($1, "Identificateur",svtype, tempval, 0);}else{yyerror("declared");YYABORT; }}
 ;
 /*----------------------- Structure du corps de programme ----------------------------*/
 corps : instruction corps 
@@ -89,9 +94,6 @@ instruction : instAFF PVIR
             | instWRITELN PVIR
 ;
 
-instIF : mc_IF PO cond PF ALO corps ALF 
-       | mc_IF PO cond PF ALO corps ALF mc_ELSE ALO corps ALF
-;
 instWHILE : mc_WHILE PO cond PF ALO corps ALF 
 ;
 instFOR : mc_FOR PO IDF DPOINT INT DPOINT INT DPOINT IDF PF ALO corps ALF {if(declarer($3)!=1){  
@@ -119,6 +121,33 @@ string : STR string
  ;
 
 
+instIF :Belse mc_ELSE ALO corps ALF  {  sprintf(tmp,"%d",qc);  
+                              ajour_quad(Fin_if,1,tmp);}
+       |B
+;
+Belse : A ALO corps ALF   {  
+				   Fin_if=qc;
+                   quadr("BR", "","vide", "vide"); 
+				   sprintf(tmp,"%d",qc); 
+                   ajour_quad(deb_else,1,tmp);
+				   }
+;    
+
+B: A ALO corps ALF { 
+    sprintf(tmp, "%d", qc); 
+    ajour_quad(deb_else_pile[tete], 1, tmp); 
+    tete--; 
+}
+;
+
+A: mc_IF PO cond PF { 
+    deb_else_pile[++tete] = qc; 
+    quadr("BZ", "", "temp_cond", " ");
+}
+;
+
+
+
 instAFF : IDF op_AFF expression  {
            if(declarer($1)!=1){ printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}
            if(div_zero(svcst,svop)!=0){printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;} 
@@ -143,12 +172,6 @@ expression
           $$ = temp;
         }
       
-     /* | PO expression PF operation term
-     {
-          char* temp = newTempVar();
-          quadr($4, $2, $4, temp);
-          $$ = temp;
-        }*/
      |term operation  PO expression PF 
      {char* temp = newTempVar();
           quadr($2, $4, $1, temp);
@@ -157,7 +180,7 @@ expression
 
 ;
 
-term: IDF                      { $$ = $1;   strcpy(svcst,$1);}/* Exemple, ajustez selon votre logique */ 
+term: IDF                      { $$ = $1;   strcpy(svcst,$1);} 
     | INT                      { $$ = $1;   strcpy(svcst,$1);}
     | REEL                     { $$ = $1;   strcpy(svcst,$1);}
     | IDF OB INT FB             

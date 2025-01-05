@@ -21,4 +21,4 @@ void ajour_quad(int num_quad, int colon_quad, char val[]);
 void afficher_qdr();
 char* newTempVar();
 
-#endif // QUAD_H
+#endif 

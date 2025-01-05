@@ -1,7 +1,7 @@
 
 #include "quad.h"
 qdr quad[1000];
-int qc = 0; // Initialize the counter
+int qc = 0; 
 
 void quadr(char opr[], char op1[], char op2[], char res[]) {
     strcpy(quad[qc].oper, opr);
@@ -27,10 +27,11 @@ for(i=0 ;i < qc; i++) {
     }
 }
 
-int tempVarCount = 0; // Global counter for temporary variables
+int tempVarCount = 0; 
 
 char* newTempVar() {
     static char temp[10];
     sprintf(temp, "t%d", tempVarCount++);
-    return strdup(temp); // Ensure each call returns a unique string
+    return strdup(temp); 
 }
+
