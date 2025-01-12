@@ -16,7 +16,8 @@ char svcst2[20];
 char svop[20];
 char svtaille[20];
 int Fin_if=0,deb_else=0;
-char tmp [20]; 
+char tmp [20];
+int ntemp=1;
 int tete = -1; //pointeur vers la pile : cas imbriqué
 int deb_else_pile[100];
 
@@ -28,7 +29,7 @@ int deb_else_pile[100];
 %token mc_PROGRAM mc_VAR mc_begin mc_END <str>mc_CONST <str>mc_INTEGER <str>mc_FLOAT mc_IF mc_ELSE mc_FOR mc_WHILE mc_READLN mc_WRITELN
 %token <str>op_ADD <str>op_SUB <str>op_MUL <str>op_DIV op_AND op_OR op_NOT op_EQ op_NEG op_INF op_INF_E op_SUP op_SUP_E op_AFF PO PF OB FB ALO ALF VIR PVIR DPOINT 
 %token <str>IDF ERR STR <str>REEL <str>INT 
-%type <str> expression term
+%type <str> expression term expC cond
 %type <str> operation
 
 /*----------------------- Les Priorités ----------------------------*/
@@ -68,19 +69,16 @@ taille:INT {strcpy(svtaille,$1);}
 listeT : ARRAY VIR listeT 
        | ARRAY 
 ;
-listeC :  AFFVALCST VIR listeC 
-       |  AFFVALCST 
-;
-AFFVALCST: IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "CONSTANTE", tempval, 0);}else{yyerror("declared");YYABORT; }}
+listeC :  IDF op_AFF val VIR listeC {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "CONSTANTE", tempval, 0);}else{yyerror("declared");YYABORT; }}
+       |  IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", "CONSTANTE", tempval, 0);}else{yyerror("declared");YYABORT; }}
 ;
 val:INT {strcpy(tempval,$1);}
    |REEL {strcpy(tempval,$1);}
 ;
 listeV : IDF VIR listeV {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur",svtype, "", 0);}else{yyerror("declared");YYABORT; }}
-       | AFFVAL VIR listeV 
+       /*| IDF op_AFF val VIR listeV {if(declarer($1)!=1){int pos; pos=rechercher($1, "Identificateur",svtype, "", 0);insererVal($1,tempval);}else{yyerror("declared");YYABORT; }}*/
        | IDF {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur", svtype, "", 0);}else{ yyerror("declared");YYABORT;}}
-       | AFFVAL;
-AFFVAL : IDF op_AFF val {if(declarer($1)!=1){int pos; pos=rechercher($1, "Identificateur",svtype, tempval, 0);}else{yyerror("declared");YYABORT; }}
+       | IDF op_AFF val {if(declarer($1)!=1){int idx; idx=rechercher($1, "Identificateur",svtype, tempval, 0);}else{yyerror("declared");YYABORT; }}
 ;
 /*----------------------- Structure du corps de programme ----------------------------*/
 corps : instruction corps 
@@ -94,8 +92,8 @@ instruction : instAFF PVIR
             | instWRITELN PVIR
 ;
 
-instWHILE : mc_WHILE PO cond PF ALO corps ALF 
-;
+
+
 instFOR : mc_FOR PO IDF DPOINT INT DPOINT INT DPOINT IDF PF ALO corps ALF {if(declarer($3)!=1){  
        printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
        YYABORT;}
@@ -140,9 +138,11 @@ B: A ALO corps ALF {
 }
 ;
 
+
 A: mc_IF PO cond PF { 
     deb_else_pile[++tete] = qc; 
-    quadr("BZ", "", "temp_cond", " ");
+    quadr("BZ", "", $3, " ");
+    
 }
 ;
 
@@ -180,28 +180,82 @@ expression
 
 ;
 
-term: IDF                      { $$ = $1;   strcpy(svcst,$1);} 
+term: IDF                      { $$ = $1;   strcpy(svcst,$1);}
     | INT                      { $$ = $1;   strcpy(svcst,$1);}
     | REEL                     { $$ = $1;   strcpy(svcst,$1);}
     | IDF OB INT FB             
 ;
+
+
+
+/*instWHILE : mc_WHILE PO cond PF ALO corps ALF 
+;*/
+
+instWHILE: E  ALO corps ALF 
+E: D PO cond PF 
+D: mc_WHILE 
+
 
 operation : op_SUB { $$ = "-"; }
     | op_ADD { $$ = "+"; }
     | op_DIV { $$ = "/"; strcpy(svop,$1); } 
     |op_MUL { $$ = "*"; }                
 ;
+cond : op_NOT cond 
+     | cond op_AND cond 
+     {
+    quadr("BZ", " ", $1," ");        // Evaluate the first operand
+    quadr("BZ", " ", $3," ");        // Evaluate the first operand
+     }
 
-cond : expression op_EQ expression 
-     | expression op_NEG expression 
-     | expression op_INF expression 
-     | expression op_SUP expression 
-     | expression op_INF_E expression 
-     | expression op_SUP_E expression 
-     | PO expression PF op_AND PO expression PF
+
+    
+     | cond op_OR cond 
+     | expC 
+     ;
+
+
+expC : expC op_SUP expC {
+            char* temp = newTempVar(); 
+            quadC(1, $1, $3, temp); 
+            $$ = temp;
+        }
+     | expC op_SUP_E expC {
+            char* temp = newTempVar(); 
+            quadC(2, $1, $3, temp); 
+            $$ = temp;
+        }
+     | expC op_INF expC {
+            char* temp = newTempVar(); 
+            quadC(3, $1, $3, temp); 
+            $$ = temp;
+        }
+     | expC op_INF_E expC {
+            char* temp = newTempVar(); 
+            quadC(4, $1, $3, temp); 
+            $$ = temp;
+        }
+     | expC op_EQ expC {
+            char* temp = newTempVar(); 
+            quadC(5, $1, $3, temp); 
+            $$ = temp;
+        }
+     | expC op_NEG expC {
+            char* temp = newTempVar(); 
+            quadC(6, $1, $3, temp); 
+            $$ = temp;
+        }
+     | expression {
+            $$ = $1; // Pass the value directly
+        }
+     ;
+
+
+
+/*cond :PO expression PF op_AND PO expression PF
      | PO expression PF op_OR PO expression PF
      | PO op_NOT expression PF
-;
+;*/
 
 %%
 int main()

@@ -16,9 +16,11 @@ extern qdr quad[1000];
 extern int qc;
 extern int tempVarCount; 
 
+void quadL(int i, char*b, char* c, char* d);
+void quadC(int i, char* b, char* c, char* d);
 void quadr(char opr[], char op1[], char op2[], char res[]);
 void ajour_quad(int num_quad, int colon_quad, char val[]);
 void afficher_qdr();
 char* newTempVar();
 
-#endif 
+#endif // QUAD_H

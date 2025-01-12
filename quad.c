@@ -1,7 +1,7 @@
 
 #include "quad.h"
 qdr quad[1000];
-int qc = 0; 
+int qc = 0; // Initialize the counter
 
 void quadr(char opr[], char op1[], char op2[], char res[]) {
     strcpy(quad[qc].oper, opr);
@@ -27,11 +27,43 @@ for(i=0 ;i < qc; i++) {
     }
 }
 
-int tempVarCount = 0; 
+int tempVarCount = 0; // Global counter for temporary variables
 
 char* newTempVar() {
     static char temp[10];
     sprintf(temp, "t%d", tempVarCount++);
-    return strdup(temp); 
+    return strdup(temp); // Ensure each call returns a unique string
 }
+/**********************************conversion d'un int en chaine de caractere******************************/
+char* convert(int i){
+	char s[15];
+	sprintf(s,"%d",i);
+	return strdup(s);
+}
+/***********************************Quads Expression logiques************************************************/
+
+/***********************************Quads Expressions de comparaison************************************************/
+void quadC(int i, char* b, char* c, char* d) {
+    switch(i) {
+        case 1: // >
+            quadr("BG", b, c, d);
+            break;
+        case 2: // >=
+            quadr("BGE", b, c, d);
+            break;
+        case 3: // <
+            quadr("BL", b, c, d);
+            break;
+        case 4: // <=
+            quadr("BLE", b, c, d);
+            break;
+        case 5: // ==
+            quadr("BE", b, c, d);
+            break;
+        case 6: // !=
+            quadr("BNE", b, c, d);
+            break;
+    }
+}
+
 
