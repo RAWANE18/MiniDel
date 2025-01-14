@@ -164,12 +164,22 @@ instAFF : IDF op_AFF expression  {
              printf("erreur Semantique: Type non compatyble : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
              
         } quadr("=", $3, "", $1);}
-          | IDF OB INT FB op_AFF expression {quadr("=", $6, "", $1); if(strtol($3, NULL, 10) > strtol(svtaille, NULL, 10)){printf("erreur Semantique: depassement de taille:%s a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}}
+          | IDF OB INT FB op_AFF expression {  
+            if(declarer($1)!=1){ printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}
+           if(div_zero($6,svop)!=0){printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;} 
+           if(verefier_cst($1)==1){printf("erreur Semantique: changement de valeur de constante a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;}
+         quadr("=", $6, "", $1); if(strtol($3, NULL, 10) > strtol(svtaille, NULL, 10)){printf("erreur Semantique: depassement de taille:%s a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}
+          if(areTypesCompatible($1,$6)==1){
+             printf("Warning: conversion implicite vers un type superieur : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
+        }if(areTypesCompatible($1,$6)==-1){
+             printf("erreur Semantique: Type non compatyble : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
+             
+        } }
 
           ;
 
 expression
-    : term          { $$ = $1; }
+    : term          { $$ = $1; strcpy(svcst,$1);}
     | term operation  expression 
     {
          if(areTypesCompatible($1,$3)==0){

@@ -8,7 +8,7 @@ INTEGER x[20];
 CONST P=7,Q=9.2;
 }
 BEGIN
-v=x[20];
+x [2]=A/i;
 i=2;
 END
 
