@@ -8,6 +8,7 @@ typedef struct
     char name[20];
     char code[20];
     char type[20];
+    char typeS[20];
     char val[20];
 } element;
 
@@ -39,7 +40,7 @@ void init()
     cptm = 0;
 }
 
-void inserer(char entite[], char code[], char type[], char val[], int i, int y)
+void inserer(char entite[], char code[], char type[], char typeS[], char val[], int i, int y)
 {
 
     switch (y)
@@ -49,6 +50,7 @@ void inserer(char entite[], char code[], char type[], char val[], int i, int y)
         strcpy(tab[i].name, entite);
         strcpy(tab[i].code, code);
         strcpy(tab[i].type, type);
+        strcpy(tab[i].typeS, typeS);
         strcpy(tab[i].val, val);
 
         cpt++;
@@ -70,7 +72,7 @@ void inserer(char entite[], char code[], char type[], char val[], int i, int y)
     }
 }
 
-int rechercher(char entite[], char code[], char type[], char val[], int y)
+int rechercher(char entite[], char code[], char type[],char typeS[], char val[], int y)
 {
     int i;
     switch (y)
@@ -86,7 +88,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
         }
         if (i < 200)
         {
-            inserer(entite, code, type, val, i, 0);
+            inserer(entite, code, type, typeS,val, i, 0);
         }
         break;
 
@@ -100,7 +102,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
         }
         if (i < 50)
         {
-            inserer(entite, code, "", "", i, 1);
+            inserer(entite, code, "", "", "",i, 1);
         }
         break;
 
@@ -114,7 +116,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y)
         }
         if (i < 50)
         {
-            inserer(entite, code, "", "", i, 2);
+            inserer(entite, code, "", "","",i, 2);
         }
         break;
 
@@ -145,7 +147,7 @@ int div_zero(char entite[], char operand[])
             return 1;
         }
         int pos;
-        pos = rechercher(entite, "Identificateur", "", "", 0);
+        pos = rechercher(entite, "Identificateur","","", "", 0);
         if (pos != -1 && strcmp(tab[pos].val, "0") == 0)
         {
 
@@ -163,23 +165,43 @@ for (int i = 0; i < 200 && tab[i].state == 1; i++)
         }
     }
 }
+/*******************************************Compatiblité des types********************************************** */
 
-
+int areTypesCompatible(char* type1, char* type2) {
+    if(strcmp(type1,"FLOAT")==0&&strcmp(type2,"INTEGER")==0){
+        return 1;
+    } if(strcmp(type2,"FLOAT")==0&&strcmp(type1,"INTEGER")==0){
+        return -1;
+    }
+    int pos1,pos2;
+   for (int i = 0; i < 200 && tab[i].state == 1; i++)
+    {
+        if (strcmp(tab[i].code, "Identificateur") == 0 && strcmp(type1, tab[i].name) == 0)
+        {
+            pos1= i;
+        }if (strcmp(tab[i].code, "Identificateur") == 0 && strcmp(type2, tab[i].name) == 0)
+        {
+            pos2= i;
+        }}
+    if (strcmp(tab[pos1].type, "INTEGER") == 0 && strcmp(tab[pos2].type, "FLOAT") == 0) return -1; 
+  if (strcmp(tab[pos1].type, "FLOAT") == 0 && strcmp(tab[pos2].type, "INTEGER") == 0) return 1; 
+return 0;
+}
 
 void afficher()
 {
     int i;
 
     printf("\n \t ---> Table des symboles des constantes et variables\n");
-    printf("\t_____________________________________________________________\n");
-    printf("\t| %-11s | %-15s | %-12s | %-10s |\n", "Nom_Entite", "Code_Entite", "Type_Entite", "Val_Entite");
-    printf("\t|-------------|-----------------|--------------|------------|\n");
+    printf("\t____________________________________________________________________________\n");
+    printf("\t| %-11s | %-15s | %-12s | %-12s | %-10s |\n", "Nom_Entite", "Code_Entite", "Type_Entite","Type_Entite", "Val_Entite");
+    printf("\t|-------------|-----------------|--------------|--------------|------------|\n");
     for (i = 0; i < cpt; i++)
     {
         if (tab[i].state == 1)
         {
-            printf("\t| %-11s | %-15s | %-12s | %-10s |\n", tab[i].name, tab[i].code, tab[i].type, tab[i].val);
-            printf("\t|-------------|-----------------|--------------|------------|\n");
+            printf("\t| %-11s | %-15s | %-12s | %-12s | %-10s |\n", tab[i].name, tab[i].code, tab[i].type,tab[i].typeS,tab[i].val);
+             printf("\t|-------------|-----------------|--------------|--------------|------------|\n");
         }
     }
 

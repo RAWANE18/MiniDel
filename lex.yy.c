@@ -698,182 +698,182 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 22 "lexical.l"
-{idx = rechercher(yytext, "Mot cle", "", "", 2); Col += strlen(yytext); return mc_PROGRAM; }
+{idx = rechercher(yytext, "Mot cle","", "", "", 2); Col += strlen(yytext); return mc_PROGRAM; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 23 "lexical.l"
-{idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_VAR; }
+{idx = rechercher(yytext, "Mot cle","","", "", 2);Col += strlen(yytext); return mc_VAR; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 24 "lexical.l"
-{idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_begin; }
+{idx = rechercher(yytext, "Mot cle","","", "", 2);Col += strlen(yytext); return mc_begin; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 25 "lexical.l"
-{idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_END; }
+{idx = rechercher(yytext, "Mot cle","","", "", 2);Col += strlen(yytext); return mc_END; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 26 "lexical.l"
-{idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_IF; }
+{idx = rechercher(yytext, "Mot cle","","", "", 2);Col += strlen(yytext); return mc_IF; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 27 "lexical.l"
-{idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_ELSE; }
+{idx = rechercher(yytext, "Mot cle","", "", "", 2);Col += strlen(yytext); return mc_ELSE; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 28 "lexical.l"
-{idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_FOR; }
+{idx = rechercher(yytext, "Mot cle","","", "", 2);Col += strlen(yytext); return mc_FOR; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 29 "lexical.l"
-{idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_WHILE; }
+{idx = rechercher(yytext, "Mot cle","","", "", 2);Col += strlen(yytext); return mc_WHILE; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 30 "lexical.l"
-{idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_READLN; }
+{idx = rechercher(yytext, "Mot cle","", "", "", 2);Col += strlen(yytext); return mc_READLN; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 31 "lexical.l"
-{idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_WRITELN; }
+{idx = rechercher(yytext, "Mot cle","", "", "", 2);Col += strlen(yytext); return mc_WRITELN; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 32 "lexical.l"
-{yylval.str=strdup("CONST");  idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_CONST; }
+{yylval.str=strdup("CONST");  idx = rechercher(yytext, "Mot cle","", "", "", 2);Col += strlen(yytext); return mc_CONST; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 33 "lexical.l"
-{yylval.str=strdup("INTEGER"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_INTEGER; }
+{yylval.str=strdup("INTEGER"); idx = rechercher(yytext, "Mot cle","", "", "", 2);Col += strlen(yytext); return mc_INTEGER; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 34 "lexical.l"
-{yylval.str=strdup("FLOAT"); idx = rechercher(yytext, "Mot cle", "", "", 2);Col += strlen(yytext); return mc_FLOAT; }
+{yylval.str=strdup("FLOAT"); idx = rechercher(yytext, "Mot cle","", "", "", 2);Col += strlen(yytext); return mc_FLOAT; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 35 "lexical.l"
-{yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_ADD; }
+{yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur","", "", "", 1); Col += strlen(yytext); return op_ADD; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 36 "lexical.l"
-{yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur", "", "", 1); Col += strlen(yytext); return op_SUB; }
+{yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur","", "", "", 1); Col += strlen(yytext); return op_SUB; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 37 "lexical.l"
-{yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_MUL; }
+{yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return op_MUL; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 38 "lexical.l"
-{yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_DIV; }
+{yylval.str=strdup(yytext); idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return op_DIV; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 39 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_AND; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return op_AND; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 40 "lexical.l"
-{ idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_OR; }
+{ idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return op_OR; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 41 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_NOT; }
+{idx = rechercher(yytext, "Separateur", "","", "", 1);Col += strlen(yytext); return op_NOT; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 42 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_EQ; }
+{idx = rechercher(yytext, "Separateur", "","", "", 1);Col += strlen(yytext); return op_EQ; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 43 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_NEG; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return op_NEG; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 44 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_INF; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return op_INF; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 45 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_INF_E; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return op_INF_E; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 46 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_SUP; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return op_SUP; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 47 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_SUP_E; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return op_SUP_E; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 48 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return op_AFF; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return op_AFF; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 49 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PO; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return PO; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 50 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PF; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return PF; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 51 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return OB; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return OB; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 52 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return FB; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return FB; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 53 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return ALO; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return ALO; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 54 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return ALF; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return ALF; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 55 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return VIR; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return VIR; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 56 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return PVIR; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return PVIR; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 57 "lexical.l"
-{idx = rechercher(yytext, "Separateur", "", "", 1);Col += strlen(yytext); return DPOINT; }
+{idx = rechercher(yytext, "Separateur","", "", "", 1);Col += strlen(yytext); return DPOINT; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP

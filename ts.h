@@ -7,6 +7,7 @@ typedef struct
     char name[20];
     char code[20];
     char type[20];
+    char typeS[20];
     char val[20];
 } element;
 
@@ -22,11 +23,12 @@ extern elt tabS[50], tabM[50];
 extern int cpt, cpts, cptm;
 
 void init();
-void inserer(char entite[], char code[], char type[], char val[], int i, int y);
-int rechercher(char entite[], char code[], char type[], char val[], int y);
+void inserer(char entite[], char code[], char type[],char typeS[], char val[], int i, int y);
+int rechercher(char entite[], char code[], char type[],char typeS[], char val[], int y);
 int declarer(char entite[]);
 int div_zero(char entite[],char operand[]);
 int verefier_cst(char entite[]);
+int areTypesCompatible(char* type1, char* type2);
 void afficher();
 
 #endif

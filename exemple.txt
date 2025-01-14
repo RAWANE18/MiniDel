@@ -2,17 +2,13 @@ PROGRAM Acad
 VAR{
 // commentaire
 INTEGER A,D,a,b,c,y,result;
-INTEGER L=1 ,k=2;
-INTEGER x[5];
-INTEGER B;
-FLOAT S;
+FLOAT S,v;
 INTEGER i;
-CONST P=7,Q=9;
+INTEGER x[20];
+CONST P=7,Q=9.2;
 }
 BEGIN
-x[2] = y / 3+ x[1];  
-result = 4.5  + (x * 2) +1;
-IF(A+1<8*2){
-A=8;
-}
+v=x[20];
+i=2;
 END
+
