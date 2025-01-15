@@ -4,11 +4,16 @@ VAR{
 INTEGER A,D,a,b,c,y,result;
 FLOAT S,v;
 INTEGER i;
-INTEGER x[20];
 CONST P=7,Q=9.2;
 }
 BEGIN
-x [2]=A/i;
-i=2;
+
+IF(A<2&&P<7){
+i=i+i;
+}
+ELSE{ 
+i=i+i;
+}
+
 END
 

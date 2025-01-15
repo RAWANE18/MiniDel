@@ -520,9 +520,9 @@ static const yytype_uint16 yyrline[] =
       75,    77,    78,    80,    82,    83,    85,    86,    87,    88,
       89,    92,    93,    95,    96,    97,    98,    99,   100,   104,
      111,   116,   118,   119,   122,   123,   130,   133,   135,   143,
-     150,   157,   167,   182,   183,   197,   211,   226,   227,   228,
-     229,   233,   234,   238,   239,   240,   241,   243,   246,   254,
-     261,   265,   270,   275,   280,   285,   290,   295
+     156,   163,   173,   188,   189,   203,   217,   232,   233,   234,
+     235,   239,   240,   244,   245,   246,   247,   249,   252,   260,
+     267,   271,   276,   281,   286,   291,   296,   301
 };
 #endif
 
@@ -1678,7 +1678,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
 #line 135 "synt.y"
     {  
 				   Fin_if=qc;
-                   quadr("BR", "","vide", "vide"); 
+                   quadr("BR","","vide", "vide"); 
 				   sprintf(tmp,"%d",qc); 
                    ajour_quad(deb_else,1,tmp);
 				   ;}
@@ -1689,26 +1689,32 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
 /* Line 1455 of yacc.c  */
 #line 143 "synt.y"
     { 
-    sprintf(tmp, "%d", qc); 
-    ajour_quad(deb_else_pile[tete], 1, tmp); 
-    tete--; 
+    // sprintf(tmp, "%d", qc); 
+    // ajour_quad(deb_else_pile[tete], 1, tmp); 
+    // tete--; 
+      
+				   Fin_if=qc;
+                    
+				   sprintf(tmp,"%d",qc); 
+                   ajour_quad(deb_else,1,tmp);
+				  
 ;}
     break;
 
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 150 "synt.y"
+#line 156 "synt.y"
     { 
     deb_else_pile[++tete] = qc; 
-    quadr("BZ", "", (yyvsp[(3) - (4)].str), "");
+
 ;}
     break;
 
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 157 "synt.y"
+#line 163 "synt.y"
     {
            if(declarer((yyvsp[(1) - (3)].str))!=1){ printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(1) - (3)].str), nb_ligne,Col);YYABORT;}
            if(div_zero(svcst,svop)!=0){printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;} 
@@ -1724,7 +1730,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 62:
 
 /* Line 1455 of yacc.c  */
-#line 167 "synt.y"
+#line 173 "synt.y"
     {  
             if(declarer((yyvsp[(1) - (6)].str))!=1){ printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",(yyvsp[(1) - (6)].str), nb_ligne,Col);YYABORT;}
            if(div_zero((yyvsp[(6) - (6)].str),svop)!=0){printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;} 
@@ -1741,14 +1747,14 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 182 "synt.y"
+#line 188 "synt.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); strcpy(svcst,(yyvsp[(1) - (1)].str));;}
     break;
 
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 184 "synt.y"
+#line 190 "synt.y"
     {
          if(areTypesCompatible((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str))==0){
             strcpy(svtype,(yyvsp[(1) - (3)].str));
@@ -1767,7 +1773,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 65:
 
 /* Line 1455 of yacc.c  */
-#line 198 "synt.y"
+#line 204 "synt.y"
     {
            if(areTypesCompatible((yyvsp[(2) - (5)].str),(yyvsp[(5) - (5)].str))==0){
             strcpy(svtype,(yyvsp[(1) - (5)].str));
@@ -1785,7 +1791,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 66:
 
 /* Line 1455 of yacc.c  */
-#line 212 "synt.y"
+#line 218 "synt.y"
     {
          if(areTypesCompatible((yyvsp[(1) - (5)].str),(yyvsp[(4) - (5)].str))==0){
             strcpy(svtype,(yyvsp[(1) - (5)].str));
@@ -1801,70 +1807,70 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 67:
 
 /* Line 1455 of yacc.c  */
-#line 226 "synt.y"
+#line 232 "synt.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str);   strcpy(svcst,(yyvsp[(1) - (1)].str));strcpy(svtype,(yyvsp[(1) - (1)].str));;}
     break;
 
   case 68:
 
 /* Line 1455 of yacc.c  */
-#line 227 "synt.y"
+#line 233 "synt.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str);   strcpy(svcst,(yyvsp[(1) - (1)].str)); strcpy(svtype,"INTEGER");;}
     break;
 
   case 69:
 
 /* Line 1455 of yacc.c  */
-#line 228 "synt.y"
+#line 234 "synt.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str);   strcpy(svcst,(yyvsp[(1) - (1)].str));strcpy(svtype,"FLOAT");;}
     break;
 
   case 70:
 
 /* Line 1455 of yacc.c  */
-#line 229 "synt.y"
+#line 235 "synt.y"
     { (yyval.str) = (yyvsp[(1) - (4)].str);   strcpy(svcst,(yyvsp[(1) - (4)].str));strcpy(svtype,(yyvsp[(1) - (4)].str));;}
     break;
 
   case 72:
 
 /* Line 1455 of yacc.c  */
-#line 234 "synt.y"
+#line 240 "synt.y"
     { quadr("BR", "", (yyvsp[(3) - (4)].str), "");;}
     break;
 
   case 73:
 
 /* Line 1455 of yacc.c  */
-#line 238 "synt.y"
+#line 244 "synt.y"
     { (yyval.str) = "-"; ;}
     break;
 
   case 74:
 
 /* Line 1455 of yacc.c  */
-#line 239 "synt.y"
+#line 245 "synt.y"
     { (yyval.str) = "+"; ;}
     break;
 
   case 75:
 
 /* Line 1455 of yacc.c  */
-#line 240 "synt.y"
+#line 246 "synt.y"
     { (yyval.str) = "/"; strcpy(svop,(yyvsp[(1) - (1)].str)); ;}
     break;
 
   case 76:
 
 /* Line 1455 of yacc.c  */
-#line 241 "synt.y"
+#line 247 "synt.y"
     { (yyval.str) = "*"; ;}
     break;
 
   case 77:
 
 /* Line 1455 of yacc.c  */
-#line 243 "synt.y"
+#line 249 "synt.y"
     {char* temp = newTempVar(); 
             quadL(1, (yyvsp[(2) - (2)].str),"", temp); 
             (yyval.str) = temp;;}
@@ -1873,7 +1879,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 78:
 
 /* Line 1455 of yacc.c  */
-#line 247 "synt.y"
+#line 253 "synt.y"
     {
     quadr("BZ", " ", (yyvsp[(1) - (3)].str)," ");        
     quadr("BZ", " ", (yyvsp[(3) - (3)].str)," ");   
@@ -1886,7 +1892,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 79:
 
 /* Line 1455 of yacc.c  */
-#line 254 "synt.y"
+#line 260 "synt.y"
     {
     quadr("BZ", "", (yyvsp[(1) - (3)].str)," ");        
     quadr("BZ", " ", (yyvsp[(3) - (3)].str)," ");   
@@ -1899,7 +1905,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 81:
 
 /* Line 1455 of yacc.c  */
-#line 265 "synt.y"
+#line 271 "synt.y"
     {
             char* temp = newTempVar(); 
             quadC(1, (yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str), temp); 
@@ -1910,7 +1916,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 82:
 
 /* Line 1455 of yacc.c  */
-#line 270 "synt.y"
+#line 276 "synt.y"
     {
             char* temp = newTempVar(); 
             quadC(2, (yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str), temp); 
@@ -1921,7 +1927,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 83:
 
 /* Line 1455 of yacc.c  */
-#line 275 "synt.y"
+#line 281 "synt.y"
     {
             char* temp = newTempVar(); 
             quadC(3, (yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str), temp); 
@@ -1932,7 +1938,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 84:
 
 /* Line 1455 of yacc.c  */
-#line 280 "synt.y"
+#line 286 "synt.y"
     {
             char* temp = newTempVar(); 
             quadC(4, (yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str), temp); 
@@ -1943,7 +1949,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 85:
 
 /* Line 1455 of yacc.c  */
-#line 285 "synt.y"
+#line 291 "synt.y"
     {
             char* temp = newTempVar(); 
             quadC(5, (yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str), temp); 
@@ -1954,7 +1960,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 86:
 
 /* Line 1455 of yacc.c  */
-#line 290 "synt.y"
+#line 296 "synt.y"
     {
             char* temp = newTempVar(); 
             quadC(6, (yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str), temp); 
@@ -1965,7 +1971,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
   case 87:
 
 /* Line 1455 of yacc.c  */
-#line 295 "synt.y"
+#line 301 "synt.y"
     {
             (yyval.str) = (yyvsp[(1) - (1)].str); 
         ;}
@@ -1974,7 +1980,7 @@ printf("\t |Programme syntaxiquement correcte| \n");    printf("\t |____________
 
 
 /* Line 1455 of yacc.c  */
-#line 1978 "synt.tab.c"
+#line 1984 "synt.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2186,7 +2192,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 301 "synt.y"
+#line 307 "synt.y"
 
 int main()
 {yyparse();

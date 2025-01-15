@@ -134,22 +134,28 @@ instIF :Belse mc_ELSE ALO corps ALF  {
 ;
 Belse : A ALO corps ALF   {  
 				   Fin_if=qc;
-                   quadr("BR", "","vide", "vide"); 
+                   quadr("BR","","vide", "vide"); 
 				   sprintf(tmp,"%d",qc); 
                    ajour_quad(deb_else,1,tmp);
 				   }
 ;    
 
 B: A ALO corps ALF { 
-    sprintf(tmp, "%d", qc); 
-    ajour_quad(deb_else_pile[tete], 1, tmp); 
-    tete--; 
+    // sprintf(tmp, "%d", qc); 
+    // ajour_quad(deb_else_pile[tete], 1, tmp); 
+    // tete--; 
+      
+				   Fin_if=qc;
+                    
+				   sprintf(tmp,"%d",qc); 
+                   ajour_quad(deb_else,1,tmp);
+				  
 }
 ;
 
 A: mc_IF PO cond PF { 
     deb_else_pile[++tete] = qc; 
-    quadr("BZ", "", $3, "");
+
 }
 ;
 
