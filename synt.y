@@ -1,6 +1,7 @@
 %{
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include "ts.h"
 #include "quad.h"
@@ -12,6 +13,10 @@ int Col=1;
 char tempval[20];
 char svtype[20];
 char svcst[20];
+  int j;
+  bool logic;
+char cst[20];
+char cst2[20];
 char svcst2[20];
 char svop[20];
 char svtaille[20];
@@ -125,39 +130,40 @@ string : STR string
                YYABORT;}}
  ;
 
-
-
 instIF :Belse mc_ELSE ALO corps ALF  { 
      sprintf(tmp,"%d",qc);  
-                              ajour_quad(Fin_if,1,tmp);}
+     ajour_quad(Fin_if,1,tmp);}
        |B
 ;
 Belse : A ALO corps ALF   {  
 				   Fin_if=qc;
-                   quadr("BR","","vide", "vide"); 
+           quadr("BR","","vide", "vide"); 
 				   sprintf(tmp,"%d",qc); 
-                   ajour_quad(deb_else,1,tmp);
+           ajour_quad(deb_else,1,tmp);
 				   }
 ;    
 
 B: A ALO corps ALF { 
-    // sprintf(tmp, "%d", qc); 
-    // ajour_quad(deb_else_pile[tete], 1, tmp); 
-    // tete--; 
-      
-				   Fin_if=qc;
-                    
+             Fin_if=qc;  
+            if (!logic){
 				   sprintf(tmp,"%d",qc); 
-                   ajour_quad(deb_else,1,tmp);
+                   ajour_quad(deb_else,1,tmp);}
+
+                 
 				  
 }
 ;
-
-A: mc_IF PO cond PF { 
-    deb_else_pile[++tete] = qc; 
+A: mc_IF PO cond PF {
+deb_else=qc;
+quadC(j,"","", "");
+ajour_quad(deb_else,2,cst);
+ajour_quad(deb_else,3,cst2);
 
 }
 ;
+
+
+
 
 
 instAFF : IDF op_AFF expression  {
@@ -250,54 +256,44 @@ cond : op_NOT cond {char* temp = newTempVar();
             quadL(1, $2,"", temp); 
             $$ = temp;}
      | cond op_AND cond 
-     {
-    quadr("BZ", " ", $1," ");        
-    quadr("BZ", " ", $3," ");   
-     char* temp = newTempVar(); 
-            quadL(2, $1,$3, temp); 
-            $$ = temp;     
+     { logic=true ;
+      sprintf(tmp,"%d",qc); 
+      ajour_quad(deb_else,1,tmp);     
      }
-     | cond op_OR cond  {
-    quadr("BZ", "", $1," ");        
-    quadr("BZ", " ", $3," ");   
-     char* temp = newTempVar(); 
-            quadL(3, $1,$3, temp); 
-            $$ = temp;     
-     }
+     | cond op_OR cond
      | expC 
      ;
 
 
 expC : expC op_SUP expC {
-            char* temp = newTempVar(); 
-            quadC(1, $1, $3, temp); 
-            $$ = temp;
+             j=1;
+            strcpy(cst,$1);
+            strcpy(cst2,$3); 
         }
      | expC op_SUP_E expC {
-            char* temp = newTempVar(); 
-            quadC(2, $1, $3, temp); 
-            $$ = temp;
+            j=2;
+            strcpy(cst,$1);
+            strcpy(cst2,$3); 
         }
-     | expC op_INF expC {
-            char* temp = newTempVar(); 
-            quadC(3, $1, $3, temp); 
-            $$ = temp;
+     | expression op_INF expression {
+              j=3;
+            strcpy(cst,$1);
+            strcpy(cst2,$3); 
         }
      | expC op_INF_E expC {
-            char* temp = newTempVar(); 
-            quadC(4, $1, $3, temp); 
-            $$ = temp;
+             j=4;
+            strcpy(cst,$1);
+            strcpy(cst2,$3);   
         }
      | expC op_EQ expC {
-            char* temp = newTempVar(); 
-            quadC(5, $1, $3, temp); 
-            $$ = temp;
+            j=5;
+            strcpy(cst,$1);
+            strcpy(cst2,$3);  
         }
      | expC op_NEG expC {
-            char* temp = newTempVar(); 
-            quadC(6, $1, $3, temp); 
-            $$ = temp;
-        }
+            j=6;
+            strcpy(cst,$1);
+            strcpy(cst2,$3);         }
      | expression {
             $$ = $1; 
         }
