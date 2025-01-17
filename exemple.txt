@@ -7,13 +7,14 @@ INTEGER i;
 CONST P=7,Q=9.2;
 }
 BEGIN
-A=D/b;
-IF(A<2&&P<7){
+
+WHILE(A<9 || D>=9 ){i=i+i;}
+IF(D>9 && D>=9){
 i=i+i;
-}
-ELSE{ 
-i=i+i;
-}
+}ELSE { i=i+i;
+ }
+
+
 
 END
 
