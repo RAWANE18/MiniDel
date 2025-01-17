@@ -20,7 +20,7 @@ char cst2[20];
 char svcst2[20];
 char svop[20];
 char svtaille[20];
-int Fin_else=0,deb_else=0 ,cond1=0,cond2=0;
+int Fin_else=0,deb_else=0,deb_while=0 ,cond1=0,cond2=0;
 char tmp [20]; 
 
 %}
@@ -129,6 +129,19 @@ string : STR string
  ;
 
 
+instWHILE: WW ALO corps ALF
+           {
+            sprintf(tmp,"%d",deb_while); 
+            quadr("BR",tmp,"vide", "vide");
+				   sprintf(tmp,"%d",qc); 
+            ajour_quad(deb_while,1,tmp);}
+;
+WW: mc_WHILE PO expC PF
+ {deb_while=qc;
+quadC(j,"","", "");
+ajour_quad(deb_while,2,cst);
+ajour_quad(deb_while,3,cst2);
+}
 
 instIF :Belse mc_ELSE ALO corps ALF  { 
      sprintf(tmp,"%d",qc);  
@@ -299,9 +312,6 @@ term: IDF                      { $$ = $1;   strcpy(svcst,$1);strcpy(svtype,$1);}
 ;
 
 
-instWHILE: M ALO corps ALF 
-M: mc_WHILE  PO expC PF
- 
 
 
 operation : op_SUB { $$ = "-"; }
