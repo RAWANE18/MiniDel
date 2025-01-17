@@ -1,8 +1,8 @@
-
+#include <stdbool.h>
 #include "quad.h"
 qdr quad[1000];
 int qc = 0; // Initialize the counter
-
+extern logic;
 void quadr(char opr[], char op1[], char op2[], char res[])
 {
     strcpy(quad[qc].oper, opr);
@@ -35,13 +35,12 @@ void afficher_qdr()
     }
 }
 
-int tempVarCount = 0; // Global counter for temporary variables
-
+int tempVarCount = 0; 
 char *newTempVar()
 {
     static char temp[10];
     sprintf(temp, "t%d", tempVarCount++);
-    return strdup(temp); // Ensure each call returns a unique string
+    return strdup(temp); 
 }
 /**********************************conversion d'un int en chaine de caractere******************************/
 char *convert(int i)
@@ -51,44 +50,59 @@ char *convert(int i)
     return strdup(s);
 }
 /***********************************Quads Expression logiques************************************************/
-void quadL(int i, char *b, char *c, char *d)
-{
-    switch (i)
+void quadL(int l,int j, char *b, char *c, char *d ,bool logic)
+{      // j quelle expression? BE BG BL ....
+    if(logic)
+    {  switch (j)
     {
-    case 1: // !
-        quadr("!", b, c, d);
+    case 1: 
+        quadr("BG", b, c, d);
         break;
-    case 2: // &&
-        quadr("&&", b, c, d);
+    case 2: 
+         quadr("BGE", b, c, d);
         break;
-    case 3: // ||
-        quadr("||", b, c, d);
+    case 3:
+        quadr("BL", b, c, d);
         break;
-    }
+    case 4: 
+        quadr("BLE", b, c, d);
+        break;
+    case 5: 
+        quadr("BE", b, c, d);
+        break;
+    case 6: 
+        quadr("BNE", b, c, d);
+        break;
+    }}
+    else 
+    {quadC(j,b,c,d);}
+
+   
 }
+
 
 /***********************************Quads Expressions de comparaison************************************************/
 void quadC(int i, char *b, char *c, char *d)
 {
     switch (i)
     {
-    case 1: // >
-        quadr("BG", b, c, d);
-        break;
-    case 2: // >=
-        quadr("BGE", b, c, d);
-        break;
-    case 3: // <
-        quadr("BL", b, c, d);
-        break;
-    case 4: // <=
+    case 1: 
         quadr("BLE", b, c, d);
         break;
+    case 2: // >=
+         quadr("BL", b, c, d);
+        break;
+    case 3: // <
+        quadr("BGE", b, c, d);
+        break;
+    case 4: // <=
+        quadr("BG", b, c, d);
+        break;
     case 5: // ==
-        quadr("BE", b, c, d);
+        quadr("BNE", b, c, d);
         break;
     case 6: // !=
-        quadr("BNE", b, c, d);
+        quadr("BE", b, c, d);
         break;
     }
 }
