@@ -13,17 +13,15 @@ int Col=1;
 char tempval[20];
 char svtype[20];
 char svcst[20];
-  int j;
-  bool logic;
+  int j ,l;
+  bool logic =false;
 char cst[20];
 char cst2[20];
 char svcst2[20];
 char svop[20];
 char svtaille[20];
-int Fin_if=0,deb_else=0;
+int Fin_else=0,deb_else=0,deb_while=0 ,cond1=0,cond2=0;
 char tmp [20]; 
-int tete = -1; 
-int deb_else_pile[100];
 
 %}
 %union {
@@ -33,7 +31,7 @@ int deb_else_pile[100];
 %token mc_PROGRAM mc_VAR mc_begin mc_END <str>mc_CONST <str>mc_INTEGER <str>mc_FLOAT mc_IF mc_ELSE mc_FOR mc_WHILE mc_READLN mc_WRITELN 
 %token <str>op_ADD <str>op_SUB <str>op_MUL <str>op_DIV op_AND op_OR op_NOT op_EQ op_NEG op_INF op_INF_E op_SUP op_SUP_E op_AFF PO PF OB FB ALO ALF VIR PVIR DPOINT 
 %token <str>IDF ERR STR <str>REEL <str>INT 
-%type <str> expression term expC cond
+%type <str> expression term expC 
 %type <str> operation
 
 /*----------------------- Les Priorités ----------------------------*/
@@ -130,40 +128,112 @@ string : STR string
                YYABORT;}}
  ;
 
+
+instWHILE: WW ALO corps ALF
+           {
+            sprintf(tmp,"%d",deb_while); 
+            quadr("BR",tmp,"vide", "vide");
+				   sprintf(tmp,"%d",qc); 
+            ajour_quad(deb_while,1,tmp);}
+;
+WW: mc_WHILE PO expC PF
+ {deb_while=qc;
+quadC(j,"","", "");
+ajour_quad(deb_while,2,cst);
+ajour_quad(deb_while,3,cst2);
+}
+
 instIF :Belse mc_ELSE ALO corps ALF  { 
      sprintf(tmp,"%d",qc);  
-     ajour_quad(Fin_if,1,tmp);}
+     ajour_quad(Fin_else,1,tmp);}
        |B
 ;
-Belse : A ALO corps ALF   {  
-				   Fin_if=qc;
+Belse : N ALO corps ALF   {  
+				   Fin_else=qc;
            quadr("BR","","vide", "vide"); 
 				   sprintf(tmp,"%d",qc); 
-           ajour_quad(deb_else,1,tmp);
+           ajour_quad(cond2,1,tmp);
+          if(l==2)ajour_quad(cond1,1,tmp);	///le cas de && on sort si la premiere false
+
 				   }
-;    
+;  
 
-B: A ALO corps ALF { 
-             Fin_if=qc;  
-            if (!logic){
+B: N ALO corps ALF { 
 				   sprintf(tmp,"%d",qc); 
-                   ajour_quad(deb_else,1,tmp);}
-
-                 
-				  
+           ajour_quad(cond2,1,tmp);	
+           if(l==2){ajour_quad(cond1,1,tmp);}	///le cas de && on sort si la premiere false
 }
 ;
-A: mc_IF PO cond PF {
+N : F | A ; // SOIT AVEC OP LOGIQUE  SOIT OP SIMPLE
+
+F : E expC PF {
+   cond2=qc; 
+   if(l==3){logic=true;}
+   else{logic=false;} // dans le tous les cas la deuxieme cond ne change pas 
+  quadL(l,j,"","","",logic);
+  sprintf(tmp,"%d",qc); 
+  ajour_quad(cond1,1,tmp);
+  ajour_quad(cond2,2,cst);
+  ajour_quad(cond2,3,cst2);
+ 
+}
+;
+E :  mc_IF PO expC op_logique
+ { cond1=qc;
+ quadL(l,j,"","","",logic);
+ajour_quad(cond1,2,cst);
+ajour_quad(cond1,3,cst2);}
+|mc_IF PO op_NOT {l=3;} //logic pour le cas du OR de la premiere cond
+;
+A: mc_IF PO expC  PF {
 deb_else=qc;
 quadC(j,"","", "");
 ajour_quad(deb_else,2,cst);
 ajour_quad(deb_else,3,cst2);
-
 }
 ;
 
+op_logique : op_AND  {l=2;}
+| op_OR  {l=1;logic=true; } //les indices pour gerer les BL, BG dans le cas du premiere condition
+;
 
 
+expC : expC op_SUP expC {
+             j=1;
+            strcpy(cst,$1);
+            strcpy(cst2,$3); 
+        }
+     | expC op_SUP_E expC {
+            j=2;
+            strcpy(cst,$1);
+            strcpy(cst2,$3); 
+        }
+     | expC op_INF expC{
+              j=3;
+            strcpy(cst,$1);
+            strcpy(cst2,$3); 
+        }
+     | expC op_INF_E expC {
+             j=4;
+            strcpy(cst,$1);
+            strcpy(cst2,$3);   
+        }
+     | expC op_EQ expC {
+            j=5;
+            strcpy(cst,$1);
+            strcpy(cst2,$3);  
+        }
+     | expC op_NEG expC {
+            j=6;
+            strcpy(cst,$1);
+            strcpy(cst2,$3);         }
+     | expression {
+            $$ = $1; 
+        } 
+        | PO expression PF {
+            $$ = $2; 
+        }
+     ;
 
 
 instAFF : IDF op_AFF expression  {
@@ -242,9 +312,6 @@ term: IDF                      { $$ = $1;   strcpy(svcst,$1);strcpy(svtype,$1);}
 ;
 
 
-instWHILE: E ALO corps ALF 
-E: mc_WHILE  PO cond PF { quadr("BR", "", $3, "");}
- 
 
 
 operation : op_SUB { $$ = "-"; }
@@ -252,52 +319,6 @@ operation : op_SUB { $$ = "-"; }
     | op_DIV { $$ = "/"; strcpy(svop,$1); } 
     |op_MUL { $$ = "*"; }                
 ;
-cond : op_NOT cond {char* temp = newTempVar(); 
-            quadL(1, $2,"", temp); 
-            $$ = temp;}
-     | cond op_AND cond 
-     { logic=true ;
-      sprintf(tmp,"%d",qc); 
-      ajour_quad(deb_else,1,tmp);     
-     }
-     | cond op_OR cond
-     | expC 
-     ;
-
-
-expC : expC op_SUP expC {
-             j=1;
-            strcpy(cst,$1);
-            strcpy(cst2,$3); 
-        }
-     | expC op_SUP_E expC {
-            j=2;
-            strcpy(cst,$1);
-            strcpy(cst2,$3); 
-        }
-     | expression op_INF expression {
-              j=3;
-            strcpy(cst,$1);
-            strcpy(cst2,$3); 
-        }
-     | expC op_INF_E expC {
-             j=4;
-            strcpy(cst,$1);
-            strcpy(cst2,$3);   
-        }
-     | expC op_EQ expC {
-            j=5;
-            strcpy(cst,$1);
-            strcpy(cst2,$3);  
-        }
-     | expC op_NEG expC {
-            j=6;
-            strcpy(cst,$1);
-            strcpy(cst2,$3);         }
-     | expression {
-            $$ = $1; 
-        }
-     ;
 
 
 %%

@@ -1,19 +1,20 @@
 PROGRAM Acad
 VAR{
 // commentaire
-INTEGER A,D,a,b,c,y,result;
+INTEGER A,D,a,b,c,y,n,result;
 FLOAT S,v;
 INTEGER i;
 CONST P=7,Q=9.2;
 }
 BEGIN
 A=D/b;
-IF(A<2&&P<7){
 i=i+i;
-}
-ELSE{ 
-i=i+i;
-}
 
+IF((D+9)>9 && D>=9){
+i=i+i;
+}ELSE { i=i+i;
+ }
+WHILE (i <n) { 
+    WRITELN('Entrez un nombre :');}
 END
 
