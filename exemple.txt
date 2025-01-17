@@ -7,14 +7,22 @@ INTEGER i;
 CONST P=7,Q=9.2;
 }
 BEGIN
-A=D/b;
-i=i+i;
-
+A=D*b;
+i=i+5;
 IF((D+9)>9 && D>=9){
 i=i+i;
-}ELSE { i=i+i;
+}ELSE { 
+   A=D+b;
  }
 WHILE (i <n) { 
-    WRITELN('Entrez un nombre :');}
+   IF((D+9)>9){
+i=i+i;
+}
+    WRITELN('Entrez un nombre :');
+     FOR (i : 0: 2 :50) {
+       result=5+i;
+     }
+     A=D*b;
+     }
 END
 

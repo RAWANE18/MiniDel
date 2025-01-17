@@ -20,8 +20,11 @@ char cst2[20];
 char svcst2[20];
 char svop[20];
 char svtaille[20];
-int Fin_else=0,deb_else=0,deb_while=0 ,cond1=0,cond2=0;
+char svval[20];
+char svidf[20];
+int Fin_else=0,deb_else=0,deb_while=0 ,cond1=0,cond2=0,deb_for=0,Fin_for=0,forcnd=0;
 char tmp [20]; 
+
 
 %}
 %union {
@@ -31,7 +34,7 @@ char tmp [20];
 %token mc_PROGRAM mc_VAR mc_begin mc_END <str>mc_CONST <str>mc_INTEGER <str>mc_FLOAT mc_IF mc_ELSE mc_FOR mc_WHILE mc_READLN mc_WRITELN 
 %token <str>op_ADD <str>op_SUB <str>op_MUL <str>op_DIV op_AND op_OR op_NOT op_EQ op_NEG op_INF op_INF_E op_SUP op_SUP_E op_AFF PO PF OB FB ALO ALF VIR PVIR DPOINT 
 %token <str>IDF ERR STR <str>REEL <str>INT 
-%type <str> expression term expC 
+%type <str> expression term expC instFOR
 %type <str> operation
 
 /*----------------------- Les Priorités ----------------------------*/
@@ -104,13 +107,36 @@ instruction : instAFF PVIR
 ;
 
 ;
-instFOR : mc_FOR PO IDF DPOINT INT DPOINT INT DPOINT IDF PF ALO corps ALF {if(declarer($3)!=1){  
+instFOR : FORB PF ALO corps ALF {
+
+  char* temp = newTempVar();
+    quadr("+",svidf,svval,temp);
+     quadr("=","",temp,svidf);
+      $$ = temp;
+        Fin_for=qc+1;
+    sprintf(tmp,"%d",forcnd); 
+            quadr("BR",tmp,"vide", "vide");
+            sprintf(tmp,"%d",Fin_for); 
+            ajour_quad(forcnd,1,tmp);
+            }
+// {}
+;
+FORB: FORA DPOINT INT DPOINT INT DPOINT term {     
+ 
+forcnd=qc;
+quadr("BG","",svidf,$7);
+   ajour_quad(deb_for,2,$3);
+strcpy(svval,$5);
+};
+FORA:mc_FOR PO IDF {
+  if(declarer($3)!=1){  
        printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
        YYABORT;}
-       else if(declarer($9)!=1){
-              printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$9, nb_ligne,Col);
-              YYABORT;}}
-;
+   deb_for=qc;
+  quadr(":=","","",$3);
+  strcpy(svidf,$3);
+};
+
 instREADLN : mc_READLN PO IDF PF {if(declarer($3)!=1){
         printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$3, nb_ligne,Col);
         YYABORT;}}
@@ -154,7 +180,6 @@ Belse : N ALO corps ALF   {
 				   sprintf(tmp,"%d",qc); 
            ajour_quad(cond2,1,tmp);
           if(l==2)ajour_quad(cond1,1,tmp);	///le cas de && on sort si la premiere false
-
 				   }
 ;  
 
@@ -240,22 +265,24 @@ instAFF : IDF op_AFF expression  {
            if(declarer($1)!=1){ printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}
            if(div_zero(svcst,svop)!=0){printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;} 
            if(verefier_cst($1)==1){printf("erreur Semantique: changement de valeur de constante a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;}
-         if(areTypesCompatible($1,$3)==1){
+         if(areTypesCompatible($1,svtype)==1){
              printf("Warning: conversion implicite vers un type superieur : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
-        }if(areTypesCompatible($1,$3)==-1){
+              
+        }if(areTypesCompatible($1,svtype)==-1){
              printf("erreur Semantique: Type non compatyble : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
-             
+              YYABORT;
         } quadr("=", $3, "", $1);}
           | IDF OB INT FB op_AFF expression {  
             if(declarer($1)!=1){ printf("erreur Semantique: Variable Non declaree (inconnue) : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}
            if(div_zero($6,svop)!=0){printf("erreur Semantique: Division par '0' a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;} 
            if(verefier_cst($1)==1){printf("erreur Semantique: changement de valeur de constante a la ligne %d a la colonne %d\n", nb_ligne,Col);YYABORT;}
          quadr("=", $6, "", $1); if(strtol($3, NULL, 10) > strtol(svtaille, NULL, 10)){printf("erreur Semantique: depassement de taille:%s a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);YYABORT;}
-          if(areTypesCompatible($1,$6)==1){
+          if(areTypesCompatible($1,svtype)==1){
              printf("Warning: conversion implicite vers un type superieur : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
-        }if(areTypesCompatible($1,$6)==-1){
+              YYABORT;
+        }if(areTypesCompatible($1,svtype)==-1){
              printf("erreur Semantique: Type non compatyble : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
-             
+             YYABORT;
         } }
 
           ;
@@ -268,7 +295,9 @@ expression
             strcpy(svtype,$1);
         }else{
              printf("Warning: Type non compatyble : %s, a la ligne %d a la colonne %d\n",$1, nb_ligne,Col);
+           
                strcpy(svtype,"FLOAT");
+                 
         }
           char* temp = newTempVar();
           quadr($2, $1, $3, temp); 
