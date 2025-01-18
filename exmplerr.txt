@@ -4,11 +4,14 @@ VAR{
 INTEGER A,D,a,b,c,y,n,result;
 FLOAT S,v;
 INTEGER i;
+INTEGER x[20];
 INTEGER e=0;
-CONST P=7488787,Q=9.2;
+CONST P=7,Q=9.2;
 }
 BEGIN
+//x[25]=5;
 A=a+2;
+v=a;
 A=D*b;
 //i=i/e;
 //k=5;
